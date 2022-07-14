@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "453292228804",
+    "project_id": "diaryapp-91825",
+    "storage_bucket": "diaryapp-91825.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453292228804:android:558980f9ab2f0d28c6c991",
+        "android_client_info": {
+          "package_name": "com.trild.diary_app.diary_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453292228804-tjdvq89av4detsbpj8fp96g4q3cot2o5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trild.diary_app.diary_app",
+            "certificate_hash": "0edfe4ffb6f21b09460c0873e0953a9bb37ff342"
+          }
+        },
+        {
+          "client_id": "453292228804-phb38fm1vp8sdhieb69q4nh6ukm0751t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtp_voQCPUhtyvZV78kGinXSQTc9X97Gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453292228804-phb38fm1vp8sdhieb69q4nh6ukm0751t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "453292228804-68ar842bt64glbm5f2fat3rput05jvgv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.trild.diaryapp.diaryApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
