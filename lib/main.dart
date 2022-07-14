@@ -1,5 +1,70 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'generic_bloc/authentication_bloc/authentication_bloc.dart';
+import 'generic_bloc/user_bloc/user_bloc.dart';
+import 'pages/login/login_bloc/login_bloc.dart';
+import 'pages/login/login_page.dart';
+import 'pages/register/register_bloc/register_bloc.dart';
+import 'repositories/firestore_repository.dart';
+import 'repositories/user_repository.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  UserRepository userRepository = UserRepository();
+  runApp(MyApp(userRepository: userRepository));
+}
+
+class MyApp extends StatelessWidget {
+  UserRepository userRepository;
+  final FirestoreRepository firestoreRepository = FirestoreRepository();
+
+  MyApp({Key? key, required this.userRepository}) : super(key: key);
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AuthenticationBloc(userRepository: userRepository)
+          ..add(AuthenticationEventStart())),
+        BlocProvider(create: (context) => LoginBloc(userRepository: userRepository)),
+        BlocProvider(create: (context) => RegisterBloc(userRepository: userRepository)),
+        BlocProvider(create: (context) => UserBloc(firestoreRepository: firestoreRepository)),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+            builder: (context, authenticationState) {
+              if (authenticationState is AuthenticationStateUninitialized) {
+                Future.delayed(const Duration(seconds: 500));
+                return LoadingPage();
+              }else if (authenticationState is AuthenticationStateSuccess) {
+                bool isEmailVerified = authenticationState.userFirebase?.emailVerified ?? false;
+                print('isEmailVerified :: $isEmailVerified' );
+                if (isEmailVerified){
+                  return HomePage(userFirebase : authenticationState.userFirebase);
+                }else{
+                  return VerificationScreen(userRepository : userRepository);
+                }
+              }else if (authenticationState is AuthenticationStateFailure) {
+                return const LoginPage();
+              }else{
+                return const LoadingPage();
+              }
+            }
+        ),
+      ),
+    );
+  }
+}
+
+
+/*
 void main() {
   runApp(const MyApp());
 }
@@ -113,3 +178,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+*/
