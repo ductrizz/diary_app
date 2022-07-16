@@ -1,10 +1,16 @@
+import 'package:diary_app/pages/base/base_button.dart';
+import 'package:diary_app/res/all_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../res/all_core.dart';
-import '../base/base_button.dart';
+
+import '../../generic_bloc/authentication_bloc/authentication_bloc.dart';
+import '../loading/loading_page.dart';
+import '../register/register_page.dart';
+import 'login_bloc/login_bloc.dart';
 
 
 class LoginPage extends StatefulWidget {
+  static const String routerName = '/LoginPage';
   const LoginPage({Key? key}) : super(key: key);
 
   @override
@@ -12,30 +18,55 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
+  final TextEditingController _entryEmailController = TextEditingController();
+  final TextEditingController _entryPasswordController =
+  TextEditingController();
+  LoginBloc? _loginBloc;
 
   @override
   void initState() {
+    _loginBloc = BlocProvider.of<LoginBloc>(context);
+    _entryEmailController.addListener(() => _loginBloc
+        ?.add(LoginEventEmailChanged(email: _entryEmailController.text)));
+    _entryPasswordController.addListener(() => _loginBloc?.add(
+        LoginEventPasswordChanged(password: _entryPasswordController.text)));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 50,
+      body: BlocListener<LoginBloc, LoginState>(
+        bloc: _loginBloc,
+        listener: (context, loginState) {
+          if (loginState.isFailure) {
+            print('Log In is Fail');
+          } else if (loginState.isSuccess) {
+            context.read<AuthenticationBloc>().add(AuthenticationEventSignIn());
+          } else if (loginState.isSubmitting) {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const LoadingPage()));
+          }
+        },
+        child: BlocBuilder<LoginBloc, LoginState>(
+          builder: (context, loginState) {
+            return SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    _titleText(),
+                    _entryEmailAndPassword(loginState: loginState),
+                    _accessButton()
+                  ],
+                ),
               ),
-              _titleText(),
-              _entryEmailAndPassword(),
-              _accessButton()
-            ],
-          ),
+            );
+          },
         ),
-      )
+      ),
     );
   }
 
@@ -48,30 +79,32 @@ class _LoginPageState extends State<LoginPage> {
           fontSize: 45,
           fontWeight: FontWeight.w800,
           fontStyle: FontStyle.italic,
-          color: Colors.blue[900]),
+          color: Colors.blue.shade900),
     ),
   );
 
-  Widget _entryEmailAndPassword() => Container(
+  Widget _entryEmailAndPassword({LoginState? loginState}) => Container(
     margin: const EdgeInsets.all(20),
     child: Column(
       children: [
         TextField(
           keyboardType: TextInputType.emailAddress,
+          controller: _entryEmailController,
           obscureText: false,
           decoration: InputDecoration(
             labelText: 'Email',
             helperText: '',
-            errorText: true ? 'invalid email' : null,
+            errorText: !loginState!.isEmailValid ? 'invalid email' : null,
           ),
         ),
         TextField(
+          controller: _entryPasswordController,
           obscureText: false,
           decoration: InputDecoration(
             labelText: 'Password',
             helperText: '',
             errorText:
-            true ? 'invalid password' : null,
+            !loginState.isPasswordValid ? 'invalid password' : null,
           ),
         )
       ],
@@ -82,10 +115,11 @@ class _LoginPageState extends State<LoginPage> {
     margin: const EdgeInsets.only(left: 20, right: 20),
     child: Column(
       children: [
+        //Button Forget Password
         TextButton(
           onPressed: () {
           },
-          child: SizedBox(
+          child: const SizedBox(
             width: double.infinity,
             child: Text(
               'Forget Password ?',
@@ -98,28 +132,36 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
-        TextElevationButton(
-            onPressed: (){},
-            buttonName: "Sign-in with email and password",baseColor: Colors.green,
-        ),
-        SizedBox(height: 10.w,),
-        TextElevationButton(
-            onPressed: (){},
-            buttonName: "Sign-in with Google Account"),
-        SizedBox(height: 10.w,),
+        //Button Login with account
+        TextElevationButton(onPressed: () {
+          _loginBloc?.add(LoginEventSignIn(
+              email: _entryEmailController.text,
+              password: _entryPasswordController.text));
+        },
+            buttonName: 'Sign-in with email and password'),
+        //Button Login With Google
+        TextElevationButton(onPressed: () {
+          _loginBloc?.add(LoginEventSignInWithGoogle());
+        },
+            buttonName: 'Sign-in with Google Account'),
+        //Button Sign Up
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("Don't have an Account ?",
-            style: text16.bold,),
+            const Text('Don\'t have an Account ?'),
             TextButton(
               onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const RegisterPage()));
               },
-              child: Text(
+              child: const Text(
                 'Sign Up',
-                style: text18.bold.copyWith(
-                    color: Colors.red,
-                    decoration: TextDecoration.underline),
+                style: TextStyle(
+                  color: Colors.pink,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  decoration: TextDecoration.underline,
+                ),
               ),
             ),
           ],

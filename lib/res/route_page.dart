@@ -1,24 +1,30 @@
 
 
+import 'package:diary_app/pages/verification/verification_page.dart';
+
+import '../pages/home/home_page.dart';
+import '../pages/login/login_page.dart';
+import '../pages/read_diary/read_diary_page.dart';
+import '../pages/register/register_page.dart';
+import '../pages/write_diary/write_diary_page.dart';
+
 class RoutePage{
-  static const initialRoute = routerHomePage;
+  static const initialRoute = '/';
   static final routes = {
-    /*routerHomePage : (context) => HomePage(),
+    routerHomePage : (context) => HomePage(),
     routerLoginPage: (context) => LoginPage(),
     routerRegisterPage : (context) => RegisterPage(),
-    routerDiaryPage : (context) => DiaryPage(),
     routerReadDiaryPage : (context) => ReadDiaryPage(),
-    routerWriteDiaryPage : (context) => WriteDiaryPage(),*/
+    routerWriteDiaryPage : (context) => WriteDiaryPage(),
+    routerVerificationPage : (context) => VerificationPage(),
   };
 
   static const routerHomePage = '/HomePage';
-  static const routerCalendarPage = '/CalendarPage';
-  static const routerEventsPage = '/EventsPage';
   static const routerLoginPage = '/LoginPage';
   static const routerRegisterPage = '/RegisterPage';
-  static const routerDiaryPage = '/DiaryPage';
   static const routerReadDiaryPage = '/ReadDiaryPage';
   static const routerWriteDiaryPage = '/WriteDiaryPage';
+  static const routerVerificationPage = '/VerificationPage';
 
 }
 

@@ -58,6 +58,13 @@ class FirestoreRepository {
       "diaryEntities": FieldValue.arrayUnion([newDiary?.toJson()]),
     });
   }
+  Future<void> modifyDiaryTest({required int? index, required DiaryEntity? newDiary})async{
+// Atomically add a new region to the "regions" array field.
+    var Start = _docRefGet;
+    await _docRefGet?.update({
+      "diaryEntities[$index]" : newDiary?.toJson(),
+    });
+  }
 
   Future<void> deleteDiary({required DiaryEntity diaryEntity})async{
     _docRefGet?.update({

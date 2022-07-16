@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../generic_bloc/authentication_bloc/authentication_bloc.dart';
+import '../../repositories/user_repository.dart';
 import '../../res/all_core.dart';
 import '../base/base_button.dart';
 
@@ -6,17 +10,25 @@ import '../base/base_button.dart';
 
 class VerificationPage extends StatefulWidget {
 
-  VerificationPage({Key? key,}) : super(key: key);
+  final UserRepository? userRepository;
+
+  VerificationPage({Key? key, this.userRepository}) : super(key: key);
 
   @override
   State<VerificationPage> createState() => _VerificationPageState();
 }
 
 class _VerificationPageState extends State<VerificationPage> {
+  UserRepository? get _userRepository => widget.userRepository;
+  User? userFirebase;
+  bool? isVerified = false;
+  AuthenticationBloc? _authenticationBloc;
 
   @override
   void initState() {
     super.initState();
+    userFirebase = _userRepository?.getUser();
+    _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
   }
 
   @override
@@ -91,6 +103,7 @@ class _VerificationPageState extends State<VerificationPage> {
       children: [
         IconAndTextButton(
           onPressed: () {
+            _authenticationBloc?.add(AuthenticationEventSignOut());
           },
           baseIcon: Icons.logout,
           buttonName: "Cancel",
@@ -99,7 +112,8 @@ class _VerificationPageState extends State<VerificationPage> {
         ),
         IconAndTextButton(
           onPressed: () {
-            },
+            _authenticationBloc?.add(AuthenticationEventSignIn());
+          },
           baseIcon: Icons.refresh,
           buttonName: "Reload",
           width: MediaQuery.of(context).size.width /2.5,
@@ -114,7 +128,9 @@ class _VerificationPageState extends State<VerificationPage> {
       Text("If you can't find the verification email:",
         style: text18.semiBold,),
       TextButton(
-          onPressed: (){},
+          onPressed: (){
+            _userRepository?.sendVerificationEmail();
+          },
           child: Text("Resent Verificaiton Email",
             style: text18.copyWith(color: Colors.red, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500, decoration: TextDecoration.underline),
           ),

@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-final DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+final DateFormat dateFormat = DateFormat("dd-MM-yyyy");
 final DateFormat hourFormat = DateFormat("HH : mm");
 
 extension dateTimeConvert on DateTime{

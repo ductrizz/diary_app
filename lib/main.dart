@@ -1,8 +1,11 @@
+import 'package:diary_app/pages/verification/verification_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'generic_bloc/authentication_bloc/authentication_bloc.dart';
 import 'generic_bloc/user_bloc/user_bloc.dart';
+import 'pages/home/home_page.dart';
+import 'pages/loading/loading_page.dart';
 import 'pages/login/login_bloc/login_bloc.dart';
 import 'pages/login/login_page.dart';
 import 'pages/register/register_bloc/register_bloc.dart';
@@ -49,7 +52,7 @@ class MyApp extends StatelessWidget {
                 if (isEmailVerified){
                   return HomePage(userFirebase : authenticationState.userFirebase);
                 }else{
-                  return VerificationScreen(userRepository : userRepository);
+                  return VerificationPage();
                 }
               }else if (authenticationState is AuthenticationStateFailure) {
                 return const LoginPage();

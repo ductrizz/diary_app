@@ -43,7 +43,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState>{
   }
 
   Future<void> _onSignUp(RegisterEventSignUp event, Emitter<RegisterState> emit) async{
+    emit(RegisterState.initial());
     try{
+      emit(RegisterState.loading(email: event.email, password: event.password));
       await _userRepository.signUp(email: event.email, password: event.password, displayName: event.displayName);
       await _userRepository.sendVerificationEmail();
       emit(RegisterState.success());

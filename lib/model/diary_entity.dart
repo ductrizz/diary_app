@@ -1,5 +1,7 @@
 
+import 'package:flutter/material.dart';
 
+@immutable
 class DiaryEntity {
   DiaryEntity({
     required this.dateTime,
@@ -8,7 +10,7 @@ class DiaryEntity {
     this.status = 'smiley',
   });
 
-  final String dateTime;
+  final num dateTime;
   String diaryTitle;
   String diaryContent;
   String? status;
@@ -24,7 +26,7 @@ class DiaryEntity {
 
   DiaryEntity.fromJson(dynamic json) :
       this(
-          dateTime: json['dateTime']! as String,
+          dateTime: json['dateTime']! as num,
           diaryTitle: json['diaryTitle']! as String,
           diaryContent: json['diaryContent']! as String,
           status: json['status']! as String
@@ -35,4 +37,5 @@ class DiaryEntity {
   String toString() {
     return 'DiaryEntity{dateTime: $dateTime, diaryTitle: $diaryTitle, diaryContent: $diaryContent, status : $status}';
   }
+
 }

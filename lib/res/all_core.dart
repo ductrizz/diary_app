@@ -3,3 +3,4 @@ export 'dimens.dart';
 export 'string_core.dart';
 export 'fonts/text_core.dart';
 export 'route_page.dart';
+export 'datetime_core.dart';

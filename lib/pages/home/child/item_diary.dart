@@ -1,16 +1,18 @@
+import 'package:diary_app/pages/read_diary/read_diary_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../model/diary_entity.dart';
 import '../../../model/user_model.dart';
 import '../../base/emotional_status.dart';
-import '../../read_diary/read_diary_page.dart';
+import '../diary_bloc/diary_bloc.dart';
 
 
 class ItemDiary extends StatelessWidget {
-  ItemDiary({Key? key, required this.diaryEntity, this.userModel}) : super(key: key);
+  ItemDiary({Key? key, this.index, required this.diaryEntity, this.userModel}) : super(key: key);
   final DiaryEntity? diaryEntity;
   final UserModel? userModel;
+  int? index;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class ItemDiary extends StatelessWidget {
       margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
       child: ElevatedButton(
         onPressed: (){
-         // BlocProvider.of<DiaryBloc>(context).add(DiaryEventRead(diaryEntity));
+          BlocProvider.of<DiaryBloc>(context).add(DiaryEventRead(diaryEntity));
           Navigator.push(context, MaterialPageRoute(
               builder: (context) => ReadDiaryPage()));
         },

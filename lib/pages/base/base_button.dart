@@ -71,6 +71,7 @@ class TextElevationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(top: 10.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.w),
         gradient:  LinearGradient(
