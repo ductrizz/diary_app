@@ -18,7 +18,7 @@ class FirestoreRepository {
     var docRef = FirebaseFirestore.instance.collection('Users').doc(uid)
         .withConverter(
       fromFirestore: UserModel.fromFirestore,
-        toFirestore: (UserModel userModel, options) => userModel.toFirestore(),
+      toFirestore: (UserModel userModel, options) => userModel.toFirestore(),
     );
     return docRef;
   }

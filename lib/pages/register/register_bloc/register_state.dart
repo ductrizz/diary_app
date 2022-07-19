@@ -10,7 +10,7 @@ class RegisterState extends Equatable{
     required this.isSuccess,
     required this.isFailure});
 
-  bool get isFormValid => isEmailValid && isPasswordValid && isConfirmPasswordValid;
+  bool get isFormValid => isDisplayName && isEmailValid && isPasswordValid && isConfirmPasswordValid;
 
   bool isDisplayName;
   bool isEmailValid;

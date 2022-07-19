@@ -1,4 +1,5 @@
 import 'package:diary_app/pages/read_diary/read_diary_page.dart';
+import 'package:diary_app/res/all_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +17,7 @@ class ItemDiary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var date = diaryEntity?.dateTime;
+    var date = (diaryEntity?.dateTime as int).toDay;
     var title = diaryEntity?.diaryTitle;
     var status = diaryEntity?.status ?? EmotionalStatus.smiley.name;
     //DiaryBloc _diaryBloc = BlocProvider.of<DiaryBloc>(context);

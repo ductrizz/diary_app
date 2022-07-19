@@ -92,14 +92,18 @@ class UserRepository extends Equatable{
 //Verify email
   Future<void> sendVerificationEmail() async {
     try {
-      final user = _firebaseAuth.currentUser!;
+      final user = await _firebaseAuth.currentUser!;
       await user.sendEmailVerification();
-    } catch (e) {}
+    } catch (e) {
+
+    }
   }
-  Future<bool> checkEmailVerified() async {
-    await _firebaseAuth.currentUser!.reload();
-    return await _firebaseAuth.currentUser!.emailVerified;
+
+  Future<bool> isEmailExisted({required String email}) async{
+    var listEmail = await _firebaseAuth.fetchSignInMethodsForEmail(email);
+    return listEmail.isNotEmpty;
   }
+
 
 
   @override

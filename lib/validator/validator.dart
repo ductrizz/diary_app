@@ -6,7 +6,7 @@ class Validator {
   }
 
   static bool isValidPassword(String password){
-    return password.length >= 3;
+    return password.length >= 6;
   }
   static bool isValidConfirmPassword(String password , String confirmPassword){
     print("${confirmPassword == password}");

@@ -37,7 +37,7 @@ class IconStatus{
         child: IconStatus.happy,);
     }
   }
-  static const Icon smiley = Icon(FontAwesomeIcons.solidFaceSmileWink, size: iconsize, color: Color(0xFF0A0A0A),);
+  static const Icon smiley = Icon(FontAwesomeIcons.faceSmile, size: iconsize, color: Color(0xFF0A0A0A),);
   static const Icon happy = Icon(FontAwesomeIcons.faceGrinHearts, size: iconsize, color: Color(0xFF0A0A0A),);
   static const Icon unhappy = Icon(FontAwesomeIcons.faceFrownOpen, size: iconsize, color: Color(0xFF0A0A0A),);
   static const Icon tired = Icon(FontAwesomeIcons.faceTired, size: iconsize, color: Color(0xFF0A0A0A),);

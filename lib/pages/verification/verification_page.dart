@@ -1,8 +1,10 @@
+import 'dart:async';
+
+import 'package:diary_app/pages/home/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../generic_bloc/authentication_bloc/authentication_bloc.dart';
-import '../../repositories/user_repository.dart';
 import '../../res/all_core.dart';
 import '../base/base_button.dart';
 
@@ -10,50 +12,70 @@ import '../base/base_button.dart';
 
 class VerificationPage extends StatefulWidget {
 
-  final UserRepository? userRepository;
-
-  VerificationPage({Key? key, this.userRepository}) : super(key: key);
+  VerificationPage({Key? key}) : super(key: key);
 
   @override
   State<VerificationPage> createState() => _VerificationPageState();
 }
 
 class _VerificationPageState extends State<VerificationPage> {
-  UserRepository? get _userRepository => widget.userRepository;
-  User? userFirebase;
-  bool? isVerified = false;
+  bool isVerified = false;
   AuthenticationBloc? _authenticationBloc;
-
+  Timer? timer;
+  User? userFirebase;
+  var i = 1;
   @override
   void initState() {
     super.initState();
-    userFirebase = _userRepository?.getUser();
+    userFirebase = FirebaseAuth.instance.currentUser;
     _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+    isVerified =  userFirebase!.emailVerified;
+    checkEmailVerified();
+    if (!isVerified) {
+      timer = Timer.periodic(const Duration(seconds: 3), (_) {
+        print("Reload : ${++i}");
+        checkEmailVerified();
+      });
+    }
+  }
+
+  Future<void> checkEmailVerified() async {
+    await FirebaseAuth.instance.currentUser!.reload();
+    setState(() {
+      isVerified =  FirebaseAuth.instance.currentUser!.emailVerified;
+      if (isVerified) timer?.cancel();
+    });
+  }
+
+
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.cyan[100],
-      body: SafeArea(
-        child: Container(
-          height: 400,
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _titleVerification(),
-              _widgetMessage(),
-              const SizedBox(height: 25,),
-              _buttonActions(),
-              const SizedBox(height: 25,),
-              _resentVerificationEmail(),
-            ],
-          ),
+  Widget build(BuildContext context) => isVerified ? HomePage() :Scaffold(
+    backgroundColor: Colors.cyan[100],
+    body: SafeArea(
+      child: Container(
+        height: 400,
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            _titleVerification(),
+            _widgetMessage(),
+            const SizedBox(height: 25,),
+            _buttonActions(),
+            const SizedBox(height: 25,),
+            _resentVerificationEmail(),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
 
   Widget _titleVerification() => Container(
       width: double.infinity,
@@ -74,7 +96,7 @@ class _VerificationPageState extends State<VerificationPage> {
             textAlign: TextAlign.center,
           ),
           Text(
-            'xxxx@mail.com',
+            '${userFirebase?.email}',
             style: text16.semiBold.copyWith(fontStyle: FontStyle.italic),
             textAlign: TextAlign.center,
           ),
@@ -83,7 +105,7 @@ class _VerificationPageState extends State<VerificationPage> {
   );
 
   Widget _widgetMessage() => Container(
-    margin: EdgeInsets.only(left: 10, right: 10, top: 20),
+    margin: const EdgeInsets.only(left: 10, right: 10, top: 20),
     child: Column(
       children: [
         Text(
@@ -112,7 +134,7 @@ class _VerificationPageState extends State<VerificationPage> {
         ),
         IconAndTextButton(
           onPressed: () {
-            _authenticationBloc?.add(AuthenticationEventSignIn());
+            checkEmailVerified();
           },
           baseIcon: Icons.refresh,
           buttonName: "Reload",
@@ -128,8 +150,9 @@ class _VerificationPageState extends State<VerificationPage> {
       Text("If you can't find the verification email:",
         style: text18.semiBold,),
       TextButton(
-          onPressed: (){
-            _userRepository?.sendVerificationEmail();
+          onPressed: () async{
+            await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+            print("Email :: ${FirebaseAuth.instance.currentUser?.email}");
           },
           child: Text("Resent Verificaiton Email",
             style: text18.copyWith(color: Colors.red, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500, decoration: TextDecoration.underline),

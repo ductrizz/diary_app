@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   User? get _userFirebase => widget.userFirebase;
   AuthenticationBloc? _authenticationBloc;
   UserBloc? _userBloc;
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 
   @override
@@ -65,6 +66,8 @@ class _HomePageState extends State<HomePage> {
           builder: (context, userState){
             if(userState is UserStateInitial){
               print('Initial HomePage');
+              /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(" Write Success") ));*/
             }else if(userState is UserStateSuccess){
               userModel = userState.userModel;
               listDiary = userState.diaryEntities;

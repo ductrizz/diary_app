@@ -1,3 +1,5 @@
+import 'package:diary_app/generic_bloc/authentication_bloc/authentication_bloc.dart';
+import 'package:diary_app/repositories/user_repository.dart';
 import 'package:diary_app/res/all_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,12 +26,19 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _entryPasswordController = TextEditingController();
   final TextEditingController _entryConfirmPasswordController = TextEditingController();
   RegisterBloc? _registerBloc;
-  UserModel? _userModel;
+  AuthenticationBloc? _authenticationBloc;
+  UserRepository userRepository = UserRepository();
+  bool isExisted = false;
 
   @override
   void initState() {
     super.initState();
     _registerBloc = BlocProvider.of<RegisterBloc>(context);
+    _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
+  }
+
+  Future<void> checkEmailExisted() async{
+    isExisted = await userRepository.isEmailExisted(email: _entryEmailController.text);
   }
 
   @override
@@ -38,11 +47,12 @@ class _RegisterPageState extends State<RegisterPage> {
       bloc: _registerBloc,
       listener: (context, registerState){
         if(registerState.isFailure){
-          print('Register is failure');
+          print('Register is isFailure');
         }else if(registerState.isSubmitting){
           print('Register is Submitting');
         }else if(registerState.isSuccess){
-          Navigator.of(context).push(MaterialPageRoute(builder: (context)=> LoginPage()));
+          _authenticationBloc?.add(AuthenticationEventSignOut());
+          Navigator.pop(context);
         }
       },
         child: BlocBuilder<RegisterBloc, RegisterState>(
@@ -89,7 +99,8 @@ class _RegisterPageState extends State<RegisterPage> {
               keyboardType: TextInputType.text,
               controller: _entryDisplayNameController,
               onChanged: (value){
-                _registerBloc?.add(RegisterEventDisplayNameChanged());
+                _entryDisplayNameController.addListener(() => _registerBloc?.add(
+                    RegisterEventDisplayNameChanged(displayName: value)));
               },
               decoration: InputDecoration(
                 labelText: "Display Name (*)",
@@ -101,7 +112,8 @@ class _RegisterPageState extends State<RegisterPage> {
               keyboardType: TextInputType.emailAddress,
               controller: _entryEmailController,
               onChanged: (value){
-                _registerBloc?.add(RegisterEventEmailChanged());
+                _entryEmailController.addListener(() => _registerBloc?.add(
+                    RegisterEventEmailChanged(email: value)));
               },
               obscureText: false,
               decoration: InputDecoration(
@@ -113,7 +125,8 @@ class _RegisterPageState extends State<RegisterPage> {
             TextField(
               controller: _entryPasswordController,
               onChanged: (value){
-                _registerBloc?.add(RegisterEventPasswordChanged());
+                _entryPasswordController.addListener(() => _registerBloc?.add(
+                    RegisterEventPasswordChanged(password: value)));
               },
               obscureText: true,
               decoration: InputDecoration(
@@ -124,29 +137,29 @@ class _RegisterPageState extends State<RegisterPage> {
             TextField(
               controller: _entryConfirmPasswordController,
               onChanged: (value){
-                _registerBloc?.add(RegisterEventConfirmPasswordChanged());
+                _entryConfirmPasswordController.addListener(() => _registerBloc?.add(
+                    RegisterEventConfirmPasswordChanged(password: value)));
               },
               obscureText: true,
               decoration: InputDecoration(
                   labelText: 'Confirm Password (*)',
                   helperText: '',
-                  errorText: registerState.isConfirmPasswordValid ? null : 'The confirmation password must be the same as the password '),
+                  errorText: registerState.isConfirmPasswordValid ? null :
+                  'The confirmation password must be the same as the password'),
             )
           ],
         ),
       );
 
   Widget _accessButton() {
-    var widthButton = MediaQuery
-        .of(context)
-        .size
-        .width / 2.7;
+    var widthButton = MediaQuery.of(context).size.width / 2.7;
     return Container(
       alignment: Alignment.center,
       margin: EdgeInsets.all(20.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+
           IconAndTextButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -155,13 +168,23 @@ class _RegisterPageState extends State<RegisterPage> {
             buttonName: "Cancel",
             baseColor: Colors.pink,
             width: widthButton,),
+
           IconAndTextButton(
             onPressed: () async{
-              _registerBloc?.add(RegisterEventSignUp(
-                  email: _entryEmailController.text,
-                  password: _entryPasswordController.text,
-                  displayName: _entryDisplayNameController.text));
-
+              await checkEmailExisted();
+              if(isExisted){
+                ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                    backgroundColor: Colors.grey.shade900.withOpacity(0.3),
+                    duration: Duration(seconds: 3),
+                    content: Container(
+                        height: 50,
+                        child: Center(child: Text(" Email is Exited! Please Change Email", style: text16.copyWith(color: Colors.black),)))));
+              }else{
+                _registerBloc?.add(RegisterEventSignUp(
+                    email: _entryEmailController.text,
+                    password: _entryPasswordController.text,
+                    displayName: _entryDisplayNameController.text));
+              }
             },
             baseIcon: Icons.send,
             buttonName: "Sign-Up",

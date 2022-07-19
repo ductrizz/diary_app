@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import '../../generic_bloc/user_bloc/user_bloc.dart';
 import '../../model/diary_entity.dart';
 import '../../res/all_core.dart';
@@ -21,13 +22,13 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
   DiaryEntity? get _diaryEntity => widget.diaryEntity;
   int? get _index => widget.index;
   String? _dateTime;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     _diaryBloc = BlocProvider.of<DiaryBloc>(context);
     if(_diaryEntity != null){
-      int dateUnix = _diaryEntity!.dateTime as int;
-      _dateTime = dateUnix.toDay;
+      _dateTime = (_diaryEntity!.dateTime as int).toDay;
       _titleDiaryController.text = _diaryEntity!.diaryTitle;
       _contentDiaryController.text = _diaryEntity!.diaryContent;
     }else{
@@ -55,7 +56,6 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
       _diaryBloc?.add(DiaryEventWrite(newDiary: newDiary));
       BlocProvider.of<UserBloc>(context).add(UserEventGetUser());
     }
-    Navigator.pop(context);
   }
 
 
@@ -66,13 +66,24 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
       bloc: _diaryBloc,
       listener: (context, diaryState){
         if((diaryState is DiaryStateWriteInitial) || (diaryState is DiaryStateModifyInitial)){
-          print('Initial:: ${diaryState}');
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              duration: Duration(seconds: 3),
+              content: Text("Initial")
+          ));
         }else if(diaryState is DiaryStateWriteSuccess){
-          print('DiaryStateWriteSuccess :: ${diaryState}');
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              duration: Duration(seconds: 3),
+              content: Text(" Write Success") ));
+          Navigator.pop(context);
         }else if(diaryState is DiaryStateModifySuccess){
-          print('DiaryStateModifySuccess :: ${diaryState}');
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              duration: Duration(seconds: 3),
+              content: Text(" Modify Success")));
+          Navigator.pop(context);
         }else{
           print(('Failure :: ${diaryState}'));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:
+          Text(" is Failure") ));
         }
       },
       child: Scaffold(
