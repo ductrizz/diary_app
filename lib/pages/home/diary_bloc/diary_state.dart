@@ -28,13 +28,12 @@ class DiaryStateReadInitial extends DiaryState{
 }
 
 class DiaryStateReadSuccess extends DiaryState{
-  int? index;
   DiaryEntity? diaryEntity;
 
-  DiaryStateReadSuccess({this.index, this.diaryEntity});
+  DiaryStateReadSuccess({this.diaryEntity});
 
   @override
-  List<Object?> get props => [index, diaryEntity];
+  List<Object?> get props => [diaryEntity];
 }
 
 class DiaryStateReadFailure extends DiaryState{

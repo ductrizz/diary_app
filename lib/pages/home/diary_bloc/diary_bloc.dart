@@ -1,9 +1,7 @@
-import 'package:diary_app/pages/read_diary/read_diary_page.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 import '../../../model/diary_entity.dart';
 import '../../../repositories/firestore_repository.dart';
@@ -30,7 +28,8 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState>{
   Future<void> _onReadDiary(DiaryEventRead event, Emitter<DiaryState> emit) async{
     emit(DiaryStateReadInitial());
     try{
-      emit(DiaryStateReadSuccess(diaryEntity : event.diaryEntity));
+      var diaryEntity = event.diaryEntity;
+      emit(DiaryStateReadSuccess(diaryEntity : diaryEntity));
     }on Exception catch (e){
       emit(DiaryStateReadFailure(messageError: e.toString()));
     }
@@ -39,8 +38,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState>{
   Future<void> _onWriteDiary(DiaryEventWrite event, Emitter<DiaryState> emit) async{
     emit(DiaryStateWriteInitial());
     try{
-      _firestoreRepository.writeDiary(
-          newDiary: event.newDiary);
+      await _firestoreRepository.writeDiaryTest(date: event.date, newDiary: event.newDiary);
       emit(DiaryStateWriteSuccess());
     }on Exception catch (e){
       emit(DiaryStateWriteFailure(messageError: e.toString()));
@@ -50,7 +48,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState>{
   Future<void> _onModifyDiary(DiaryEventModify event, Emitter<DiaryState> emit) async{
     emit(DiaryStateModifyInitial());
     try{
-      await _firestoreRepository.modifyDiaryTest(index: event.index, newDiary: event.newDiary);
+      await _firestoreRepository.modifyDiaryTest(date: event.date, newDiary: event.newDiary);
       emit(DiaryStateModifySuccess());
     }on Exception catch (_){
       emit(DiaryStateModifyFailure());

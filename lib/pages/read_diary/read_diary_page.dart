@@ -1,3 +1,4 @@
+import 'package:diary_app/generic_bloc/user_bloc/user_bloc.dart';
 import 'package:diary_app/pages/write_diary/write_diary_page.dart';
 import 'package:diary_app/res/all_core.dart';
 import 'package:flutter/material.dart';
@@ -15,52 +16,41 @@ class ReadDiaryPage extends StatefulWidget {
   State<ReadDiaryPage> createState() => _ReadDiaryPageState();
 }
 
-class _ReadDiaryPageState extends State<ReadDiaryPage> {
-  int? index;
+class _ReadDiaryPageState extends State<ReadDiaryPage> with WidgetsBindingObserver {
   DiaryEntity? diaryEntity;
+  DiaryBloc? _diaryBloc;
+  UserBloc? _userBloc;
 
   @override
-  void didUpdateWidget(covariant ReadDiaryPage oldWidget) {
-    super.didUpdateWidget(oldWidget);
+  void initState() {
+    super.initState();
+    _diaryBloc = BlocProvider.of<DiaryBloc>(context);
+    _userBloc = BlocProvider.of<UserBloc>(context);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            tooltip: 'DeleteDiary',
-            backgroundColor: Color.fromRGBO(246, 23, 5, 0.5019607843137255),
-            onPressed: (){
-              BlocProvider.of<DiaryBloc>(context).add(DiaryEventDelete(diaryEntity: diaryEntity));
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
-            },
-            child: const Icon(Icons.delete_forever, color: Colors.black,),),
-          SizedBox(height: 10,),
-          FloatingActionButton(
-            tooltip: 'Edit Diary',
-            backgroundColor: Color.fromRGBO(65, 165, 172, 0.5),
-            onPressed: (){
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=>WriteDiaryPage(index: index ,diaryEntity: diaryEntity,)));
-            },
-            child: const Icon(Icons.edit, color: Colors.black,),),
+      appBar: AppBar(
+        title: const Text("Read Diary"),
+        titleTextStyle: titleTextApp,
+        actions: [
+          popupMenuButton()
         ],
       ),
-
       backgroundColor: const Color.fromRGBO(219, 235, 236, 1.0),
       body: SafeArea(
           child: BlocBuilder<DiaryBloc, DiaryState>(builder: (context, diaryState){
             if(diaryState is DiaryStateReadInitial){
               return LoadingPage();
             }else if(diaryState is DiaryStateReadSuccess){
-              index = diaryState.index;
               diaryEntity = diaryState.diaryEntity;
-              var timerUnix =diaryEntity!.dateTime as int;
-              var dateTime = timerUnix.toDay;
+              var dateTime =diaryEntity!.dateTime;
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -84,4 +74,45 @@ class _ReadDiaryPageState extends State<ReadDiaryPage> {
       ),
     );
   }
+
+  PopupMenuButton<int> popupMenuButton() => PopupMenuButton<int>(
+    itemBuilder: (context) => [
+      // popupmenu item 1
+      PopupMenuItem(
+        value: 1,
+        // row has two child icon and text.
+        child: Row(children: const [
+          Icon(Icons.delete_forever, color: Colors.red,),
+          SizedBox(width: 10,),
+          Text("Delete Diary")
+        ],),
+      ),
+      // popupmenu item 2
+      PopupMenuItem(
+        value: 2,
+        // row has two child icon and text
+        child: Row(children: const [
+          Icon(Icons.edit, color: Colors.black,),
+          SizedBox(width: 10,),
+          Text("Edit Diary")
+        ],),
+      ),
+    ],
+    offset: Offset(5, 55),
+    color: Colors.white,
+    elevation: 2,
+    onSelected: (value){
+      if(value == 1){
+        _diaryBloc?.add(DiaryEventDelete(diaryEntity: diaryEntity));
+        _userBloc?.add(UserEventGetUser());
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
+        print('tap 1');
+      }
+      if(value == 2){
+        print('tap 2');
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context)=> WriteDiaryPage(diaryEntity: diaryEntity)));
+      }
+    },
+  );
 }

@@ -10,7 +10,7 @@ class DiaryEntity {
     this.status = 'smiley',
   });
 
-  final num dateTime;
+  final String? dateTime;
   String diaryTitle;
   String diaryContent;
   String? status;
@@ -26,7 +26,7 @@ class DiaryEntity {
 
   DiaryEntity.fromJson(dynamic json) :
       this(
-          dateTime: json['dateTime']! as num,
+          dateTime: json['dateTime']! as String,
           diaryTitle: json['diaryTitle']! as String,
           diaryContent: json['diaryContent']! as String,
           status: json['status']! as String

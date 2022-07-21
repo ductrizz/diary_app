@@ -20,7 +20,8 @@ class UserModel {
           displayName: json['displayName']! as String,
           birthday: json['birthday']! as String,
           isVerified: json['isVerified']! as bool,
-          diaryEntities: json['diaryEntities']! as List<DiaryEntity>,
+          diaryEntities: json['diaryEntities']! as Map,
+          //diaryEntities: json['diaryEntities']! as List<DiaryEntity>,
 
         );
 
@@ -29,7 +30,8 @@ class UserModel {
   final String? email;
   String? displayName;
   String? birthday;
-  List<dynamic>? diaryEntities;
+  Map? diaryEntities;
+  //List<dynamic>? diaryEntities;
 
   Map<String, Object?> toJson() {
     return {
@@ -47,7 +49,8 @@ class UserModel {
     String? email,
     String? displayName,
     String? birthday,
-    List<DiaryEntity>? diaryEntities
+    Map? diaryEntities
+    //List<DiaryEntity>? diaryEntities
   }) {
     return UserModel(
         uid: uid ?? this.uid,
@@ -55,7 +58,7 @@ class UserModel {
         displayName: displayName ?? this.displayName,
         birthday: birthday ?? this.birthday,
         isVerified: isVerified ?? this.isVerified,
-        diaryEntities: diaryEntities ?? List<DiaryEntity>.empty(),
+        diaryEntities: diaryEntities ?? this.diaryEntities,
     );
   }
 

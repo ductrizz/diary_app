@@ -47,7 +47,7 @@ class UserRepository extends Equatable{
         email: user?.email,
         displayName: displayName,
         isVerified: user?.emailVerified,
-        diaryEntities: List<DiaryEntity>.empty(),
+        diaryEntities: Map(),
     );
     _fireStoreRepository = FirestoreRepository();
     _fireStoreRepository?.saveUserCredentials(userModel: userModel);

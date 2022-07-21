@@ -140,3 +140,26 @@ class TextInkWellButton extends StatelessWidget {
     );
   }
 }
+
+//CustomTextButton
+class CustomTextButton extends StatelessWidget {
+  CustomTextButton({
+    Key? key,
+    required this.onPressed,
+    required this.buttonName,
+    this.baseColor,
+  }) : super(key: key);
+
+  final VoidCallback onPressed;
+  final String buttonName;
+  final MaterialColor? baseColor;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        onPressed: onPressed,
+        child: Text(buttonName, style: buttonTextApp.copyWith(color: baseColor ?? Colors.black),));
+
+  }
+}

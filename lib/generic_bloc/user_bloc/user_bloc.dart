@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 import '../../model/diary_entity.dart';
 import '../../model/user_model.dart';
@@ -22,12 +23,11 @@ class UserBloc extends Bloc<UserEvent, UserState>{
     emit(UserStateInitial());
     try {
       UserModel? userModel = await _firestoreRepository?.getUserCredentials();
-      List<dynamic>? diaryEntitiesPrimary = userModel?.diaryEntities;
-      List<DiaryEntity>? diaryEntities = diaryEntitiesPrimary?.map((e) {
-        DiaryEntity diaryEntity = DiaryEntity.fromJson(e);
-        print("e :: ${e.toString()} , diary :: ${diaryEntity.toString()}");
+      Map<dynamic, dynamic>? diaryEntitiesPrimary = userModel?.diaryEntities;
+      List<DiaryEntity>? diaryEntities = diaryEntitiesPrimary?.values.map((e){
+        DiaryEntity? diaryEntity = DiaryEntity.fromJson(e);
         return diaryEntity;
-      }).toList();
+      }).cast<DiaryEntity>().toList();
       emit(UserStateSuccess(userModel: userModel, diaryEntities: diaryEntities));
     }catch (e){
       print(e);

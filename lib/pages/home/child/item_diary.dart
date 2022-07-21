@@ -17,7 +17,7 @@ class ItemDiary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var date = (diaryEntity?.dateTime as int).toDay;
+    var date = diaryEntity?.dateTime;
     var title = diaryEntity?.diaryTitle;
     var status = diaryEntity?.status ?? EmotionalStatus.smiley.name;
     //DiaryBloc _diaryBloc = BlocProvider.of<DiaryBloc>(context);

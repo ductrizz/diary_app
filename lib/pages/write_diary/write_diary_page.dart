@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import '../../generic_bloc/user_bloc/user_bloc.dart';
 import '../../model/diary_entity.dart';
 import '../../res/all_core.dart';
@@ -8,8 +7,7 @@ import '../home/diary_bloc/diary_bloc.dart';
 
 class WriteDiaryPage extends StatefulWidget {
   DiaryEntity? diaryEntity;
-  int? index;
-  WriteDiaryPage({Key? key, this.index, this.diaryEntity}) : super(key: key);
+  WriteDiaryPage({Key? key, this.diaryEntity}) : super(key: key);
 
   @override
   State<WriteDiaryPage> createState() => _WriteDiaryPageState();
@@ -20,15 +18,14 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
   final TextEditingController _contentDiaryController = TextEditingController();
   DiaryBloc? _diaryBloc;
   DiaryEntity? get _diaryEntity => widget.diaryEntity;
-  int? get _index => widget.index;
   String? _dateTime;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  DiaryEntity? newDiary;
 
   @override
   void initState() {
     _diaryBloc = BlocProvider.of<DiaryBloc>(context);
     if(_diaryEntity != null){
-      _dateTime = (_diaryEntity!.dateTime as int).toDay;
+      _dateTime = _diaryEntity!.dateTime;
       _titleDiaryController.text = _diaryEntity!.diaryTitle;
       _contentDiaryController.text = _diaryEntity!.diaryContent;
     }else{
@@ -36,29 +33,21 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
     }
     super.initState();
   }
-
   void _pressWriteDiary(){
-    DiaryEntity newDiary;
+
+    newDiary = DiaryEntity(
+        dateTime: _dateTime,
+        diaryTitle: _titleDiaryController.text,
+        diaryContent: _contentDiaryController.text);
     if(_diaryEntity != null){
-      print('_diaryEntity :: $_diaryEntity');
-      newDiary = DiaryEntity(
-          dateTime: _dateTime?.toSinceEpoch as num,
-          diaryTitle: _titleDiaryController.text,
-          diaryContent: _contentDiaryController.text);
-      _diaryBloc?.add(DiaryEventModify(index: _index, newDiary: newDiary));
-      _diaryBloc?.add(DiaryEventRead(newDiary));
-      BlocProvider.of<UserBloc>(context).add(UserEventGetUser());
+      //Modify
+      _diaryBloc?.add(DiaryEventModify(date: _dateTime, newDiary: newDiary));
     }else{
-      newDiary = DiaryEntity(
-          dateTime: _dateTime?.toSinceEpoch as num,
-          diaryTitle: _titleDiaryController.text,
-          diaryContent: _contentDiaryController.text);
-      _diaryBloc?.add(DiaryEventWrite(newDiary: newDiary));
-      BlocProvider.of<UserBloc>(context).add(UserEventGetUser());
+      //Write
+      _diaryBloc?.add(DiaryEventWrite(date: _dateTime ,newDiary: newDiary));
     }
+    BlocProvider.of<UserBloc>(context).add(UserEventGetUser());
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -66,24 +55,23 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
       bloc: _diaryBloc,
       listener: (context, diaryState){
         if((diaryState is DiaryStateWriteInitial) || (diaryState is DiaryStateModifyInitial)){
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              duration: Duration(seconds: 3),
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              //duration: Duration(seconds: 3),
               content: Text("Initial")
           ));
         }else if(diaryState is DiaryStateWriteSuccess){
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               duration: Duration(seconds: 3),
               content: Text(" Write Success") ));
-          Navigator.pop(context);
+          Navigator.of(context).pop();
         }else if(diaryState is DiaryStateModifySuccess){
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          _diaryBloc?.add(DiaryEventRead(newDiary));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               duration: Duration(seconds: 3),
               content: Text(" Modify Success")));
-          Navigator.pop(context);
+          Navigator.of(context).pop();
         }else{
-          print(('Failure :: ${diaryState}'));
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:
-          Text(" is Failure") ));
+           print(('Failure :: ${diaryState}'));
         }
       },
       child: Scaffold(
@@ -111,6 +99,7 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
     children: [
       TextField(
         textAlign: TextAlign.center,
+        controller: _titleDiaryController,
         onChanged: (value) {},
         decoration: const InputDecoration(
             border: InputBorder.none,
@@ -126,6 +115,7 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
 
   Widget _contentDiary() =>Expanded(
     child: TextField(
+      controller: _contentDiaryController,
       onChanged: (value) {
       },
       decoration: const InputDecoration(

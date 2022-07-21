@@ -15,24 +15,26 @@ class DiaryEventRead extends DiaryEvent{
 }
 
 class DiaryEventWrite extends DiaryEvent{
+  String? date;
   DiaryEntity? newDiary;
 
-  DiaryEventWrite({required this.newDiary});
+  DiaryEventWrite({required this.date,required this.newDiary});
   @override
-  List<Object?> get props => [newDiary];
+  List<Object?> get props => [date, newDiary];
 }
 
 class DiaryEventModify extends DiaryEvent{
-  int? index;
+  String? date;
   DiaryEntity? newDiary;
 
-  DiaryEventModify({this.index, this.newDiary,});
+  DiaryEventModify({this.date, this.newDiary,});
 
   @override
-  List<Object?> get props => [index, newDiary];
+  List<Object?> get props => [date, newDiary];
 }
 
 class DiaryEventDelete extends DiaryEvent{
+  String? date;
   DiaryEntity? diaryEntity;
 
   DiaryEventDelete({required this.diaryEntity});

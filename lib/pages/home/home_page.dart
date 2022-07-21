@@ -1,5 +1,6 @@
+import 'package:diary_app/pages/base/base_button.dart';
 import 'package:diary_app/pages/write_diary/write_diary_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:diary_app/res/all_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,17 +12,16 @@ import 'child/item_diary.dart';
 
 
 class HomePage extends StatefulWidget {
-  static const String routerName = '/HomePage';
-  User? userFirebase;
-  HomePage({Key? key, this.userFirebase}) : super(key: key);
+  const HomePage({Key? key,}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 class _HomePageState extends State<HomePage> {
-  User? get _userFirebase => widget.userFirebase;
   AuthenticationBloc? _authenticationBloc;
   UserBloc? _userBloc;
+  UserModel? userModel;
+  List<DiaryEntity>? listDiary;
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 
@@ -33,11 +33,39 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  void canWriteNew(){
+    var fecthDiaryToday = listDiary?.where((diary) => diary.dateTime == DateTime.now().toDay);
+    print("fecthDiaryToday:: ${fecthDiaryToday?.isNotEmpty}");
+    if (fecthDiaryToday?.isNotEmpty ?? false){
+      showDialog(context: context, builder: (BuildContext context) => AlertDialog(
+        title: Text("Diary Already Exists!",),
+        titleTextStyle: titleTextApp.copyWith(color: Colors.red.shade900),
+        content: Text("Today's diary already exists. Do you want to modify?"),
+        contentTextStyle: notificationTextApp.copyWith(color: Colors.black),
+        actions: [
+          CustomTextButton(onPressed: (){
+            Navigator.of(context).pop();
+          }, buttonName: "Cancel"),
+          CustomTextButton(onPressed: (){
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context)=> WriteDiaryPage(diaryEntity: fecthDiaryToday!.first,)));
+          },
+              buttonName: "Modify"),
+          CustomTextButton(onPressed: (){
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context)=> WriteDiaryPage()));
+          },
+              buttonName: "Write New"),
+        ],
+      ));
+    }else{
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context)=> WriteDiaryPage()));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    UserModel? userModel;
-    List<DiaryEntity>? listDiary;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -46,8 +74,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             key: const Key('btnRouteWrite',),
             onPressed: (){
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context)=> WriteDiaryPage()));
+              canWriteNew();
             },
             icon: const Icon(Icons.add_box_outlined,),
             tooltip: "Add Diary",
@@ -65,14 +92,13 @@ class _HomePageState extends State<HomePage> {
       body:  BlocBuilder<UserBloc, UserState>(
           builder: (context, userState){
             if(userState is UserStateInitial){
-              print('Initial HomePage');
               /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(" Write Success") ));*/
             }else if(userState is UserStateSuccess){
               userModel = userState.userModel;
               listDiary = userState.diaryEntities;
             }else if(userState is UserStateFailure){
-              print('Failure HomePage');
+
             }
             return ListView.builder(
                 itemCount: listDiary?.length ?? 0,

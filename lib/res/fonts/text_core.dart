@@ -19,6 +19,7 @@ TextStyle get dateDiaryText => fontDiary.copyWith(fontWeight: FontWeight.w500, f
 TextStyle get titleTextApp => fontApp.copyWith(fontWeight: FontWeight.bold, fontSize: 25.sp);
 TextStyle get normalTextApp => fontApp.copyWith(fontWeight: FontWeight.w500, fontSize: 16.sp);
 TextStyle get buttonTextApp => fontApp.copyWith(fontWeight: FontWeight.w500, fontSize: 16.sp);
+TextStyle get notificationTextApp => fontApp.copyWith(fontWeight: FontWeight.w500, fontSize: 16.sp);
 
 
 

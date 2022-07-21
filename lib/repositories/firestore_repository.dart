@@ -41,10 +41,36 @@ class FirestoreRepository {
 
 //Set, Get, Remove data by normal method
 
-  Future<void> writeDiary({required DiaryEntity? newDiary})async{
-// Atomically add a new region to the "regions" array field.
+  /*Future<void> writeDiary({required DiaryEntity? newDiary})async{
+  // Atomically add a new region to the "regions" array field.
     _docRefGet?.update({
       "diaryEntities": FieldValue.arrayUnion([newDiary?.toJson()]),
+    });
+  }*/
+
+  Future<void> writeDiaryTest({required String? date, required DiaryEntity? newDiary})async {
+    // Atomically add a new region to the "regions" array field.
+    _docRefGet?.update({
+      "diaryEntities": {
+        "${date}": newDiary?.toJson(),
+      }
+    });
+  }
+
+  Future<void> modifyDiaryTest({required String? date, required DiaryEntity? newDiary})async{
+// Atomically add a new region to the "regions" array field.
+    _docRefGet?.update({
+      "diaryEntities": {
+        "${date}": newDiary?.toJson(),
+      }
+    });
+  }
+
+  Future<void> deleteDiaryTest({required String date, required DiaryEntity diaryEntity})async{
+    _docRefGet?.update({
+      "diaryEntities": {
+        "${date}": FieldValue.delete(),
+      }
     });
   }
 
@@ -58,13 +84,7 @@ class FirestoreRepository {
       "diaryEntities": FieldValue.arrayUnion([newDiary?.toJson()]),
     });
   }
-  Future<void> modifyDiaryTest({required int? index, required DiaryEntity? newDiary})async{
-// Atomically add a new region to the "regions" array field.
-    var Start = _docRefGet;
-    await _docRefGet?.update({
-      "diaryEntities[$index]" : newDiary?.toJson(),
-    });
-  }
+
 
   Future<void> deleteDiary({required DiaryEntity diaryEntity})async{
     _docRefGet?.update({
