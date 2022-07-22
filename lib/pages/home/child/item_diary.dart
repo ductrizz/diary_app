@@ -49,12 +49,16 @@ class ItemDiary extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Colors.black)),
             const SizedBox(width: 10,),
-            Text(title!,
-              style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                  overflow: TextOverflow.ellipsis),),
+            Expanded(
+              child: Text(title!,
+                style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
       ),

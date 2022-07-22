@@ -28,7 +28,10 @@ class UserBloc extends Bloc<UserEvent, UserState>{
         DiaryEntity? diaryEntity = DiaryEntity.fromJson(e);
         return diaryEntity;
       }).cast<DiaryEntity>().toList();
-      emit(UserStateSuccess(userModel: userModel, diaryEntities: diaryEntities));
+      diaryEntities?.sort((a, b) => ((a.dateTime ?? "").compareTo(b.dateTime ?? "")));
+      List<DiaryEntity>? listDiary = diaryEntities?.reversed.toList();
+
+      emit(UserStateSuccess(userModel: userModel, diaryEntities: listDiary));
     }catch (e){
       print(e);
       emit(UserStateFailure());

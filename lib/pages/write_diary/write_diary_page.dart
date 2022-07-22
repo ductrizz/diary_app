@@ -1,9 +1,11 @@
+import 'package:diary_app/pages/base/emotional_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../generic_bloc/user_bloc/user_bloc.dart';
 import '../../model/diary_entity.dart';
 import '../../res/all_core.dart';
 import '../home/diary_bloc/diary_bloc.dart';
+import 'child/dialog_option_status.dart';
 
 class WriteDiaryPage extends StatefulWidget {
   DiaryEntity? diaryEntity;
@@ -20,6 +22,7 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
   DiaryEntity? get _diaryEntity => widget.diaryEntity;
   String? _dateTime;
   DiaryEntity? newDiary;
+  String? _selectedStatus = EmotionalStatus.smiley.name;
 
   @override
   void initState() {
@@ -28,8 +31,10 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
       _dateTime = _diaryEntity!.dateTime;
       _titleDiaryController.text = _diaryEntity!.diaryTitle;
       _contentDiaryController.text = _diaryEntity!.diaryContent;
+      _selectedStatus = _diaryEntity!.status;
     }else{
       _dateTime = DateTime.now().toDay;
+      _displayDialog(context);
     }
     super.initState();
   }
@@ -38,7 +43,8 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
     newDiary = DiaryEntity(
         dateTime: _dateTime,
         diaryTitle: _titleDiaryController.text,
-        diaryContent: _contentDiaryController.text);
+        diaryContent: _contentDiaryController.text,
+        status: _selectedStatus);
     if(_diaryEntity != null){
       //Modify
       _diaryBloc?.add(DiaryEventModify(date: _dateTime, newDiary: newDiary));
@@ -75,6 +81,17 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
         }
       },
       child: Scaffold(
+        appBar: AppBar(
+          title: Text("Write Diary"),
+          titleTextStyle: titleTextApp,
+          actions: [
+            IconButton(
+                onPressed: (){
+                  _displayDialog(context);
+                  },
+                icon: Icon(Icons.emoji_emotions_outlined))
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
           tooltip: 'Edit Diary',
           backgroundColor: const Color.fromRGBO(65, 165, 172, 0.5),
@@ -128,4 +145,13 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
       maxLines: null,
     ),
   );
+
+  _displayDialog(BuildContext context) async {
+    _selectedStatus = await showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return dialogOptionStatus(context);
+    }
+    );
+  }
 }

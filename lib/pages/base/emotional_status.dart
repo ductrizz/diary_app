@@ -9,6 +9,7 @@ enum EmotionalStatus{
   angry, //tuc gian
   tired,
 }
+
 class IconStatus{
   static const double iconsize = 30;
   String status;
@@ -44,4 +45,46 @@ class IconStatus{
   static const Icon angry = Icon(FontAwesomeIcons.faceAngry, size: iconsize, color: Color(0xFF0A0A0A));
   static const Icon power = Icon(FontAwesomeIcons.solidHandBackFist, size: iconsize, color: Color(
       0xFFF8F870));
+}
+
+extension UploadDocumentNameExt on  EmotionalStatus{
+  String get name {
+    switch (this) {
+      case EmotionalStatus.smiley:
+        return 'smiley';
+      case EmotionalStatus.happy:
+        return 'happy';
+      case EmotionalStatus.unhappy:
+        return 'unhappy';
+      case EmotionalStatus.angry:
+        return 'angry';
+      case EmotionalStatus.tired:
+        return 'tired';
+      case EmotionalStatus.power:
+        return 'power';
+      default:
+        return 'smiley';
+    }
+  }
+}
+
+extension UploadDocumentStringStatus on  EmotionalStatus{
+  String get stringStatus {
+    switch (this) {
+      case EmotionalStatus.smiley:
+        return 'A beautiful day';
+      case EmotionalStatus.happy:
+        return 'I feel so happy';
+      case EmotionalStatus.unhappy:
+        return "I'm so sad";
+      case EmotionalStatus.angry:
+        return 'I was angry';
+      case EmotionalStatus.tired:
+        return 'A tired day';
+      case EmotionalStatus.power:
+        return 'I feel full of energy';
+      default:
+        return 'A beautiful day';
+    }
+  }
 }

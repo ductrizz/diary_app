@@ -38,7 +38,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState>{
   Future<void> _onWriteDiary(DiaryEventWrite event, Emitter<DiaryState> emit) async{
     emit(DiaryStateWriteInitial());
     try{
-      await _firestoreRepository.writeDiaryTest(date: event.date, newDiary: event.newDiary);
+      await _firestoreRepository.writeDiary(date: event.date, newDiary: event.newDiary);
       emit(DiaryStateWriteSuccess());
     }on Exception catch (e){
       emit(DiaryStateWriteFailure(messageError: e.toString()));
@@ -48,7 +48,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState>{
   Future<void> _onModifyDiary(DiaryEventModify event, Emitter<DiaryState> emit) async{
     emit(DiaryStateModifyInitial());
     try{
-      await _firestoreRepository.modifyDiaryTest(date: event.date, newDiary: event.newDiary);
+      await _firestoreRepository.writeDiary(date: event.date, newDiary: event.newDiary);
       emit(DiaryStateModifySuccess());
     }on Exception catch (_){
       emit(DiaryStateModifyFailure());
