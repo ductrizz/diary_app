@@ -7,12 +7,6 @@ class UserEvent extends Equatable{
 }
 
 class UserEventGetUser extends UserEvent{
- /* User? userFirebase;
-
-  UserEventGetUser({required this.userFirebase});
-
-  @override
-  List<Object?> get props => [userFirebase];*/
 }
 
 class UserEventUpdateInforUser extends UserEvent{

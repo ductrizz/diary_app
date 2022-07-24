@@ -10,10 +10,8 @@ import '../diary_bloc/diary_bloc.dart';
 
 
 class ItemDiary extends StatelessWidget {
-  ItemDiary({Key? key, this.index, required this.diaryEntity, this.userModel}) : super(key: key);
+  ItemDiary({Key? key, required this.diaryEntity}) : super(key: key);
   final DiaryEntity? diaryEntity;
-  final UserModel? userModel;
-  int? index;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +20,15 @@ class ItemDiary extends StatelessWidget {
     var status = diaryEntity?.status ?? EmotionalStatus.smiley.name;
     //DiaryBloc _diaryBloc = BlocProvider.of<DiaryBloc>(context);
     return Container(
-      //decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)),
-      height: 50,
-      margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.w),
+        gradient:  LinearGradient(
+            colors: [Colors.white, Colors.cyan.shade100],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter),
+      ),
+      height: 50.w,
+      margin: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.w),
       child: ElevatedButton(
         onPressed: (){
           BlocProvider.of<DiaryBloc>(context).add(DiaryEventRead(diaryEntity));
@@ -32,30 +36,23 @@ class ItemDiary extends StatelessWidget {
               builder: (context) => ReadDiaryPage()));
         },
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            backgroundColor: MaterialStateProperty.all(Color.alphaBlend(Colors.grey.shade200, Colors.cyan.shade300)),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    side: const BorderSide(width: 2, color: Colors.white)))),
+                    borderRadius: BorderRadius.circular(25.w),
+                    side: BorderSide(width: 2.w , color: Colors.cyan.shade100)))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children:[
             //Icon(const IconData(0xe22b, fontFamily: 'MaterialIcons'), size: 30, color: Colors.yellow[700],),
             IconStatus(status: status).icon,
-            const SizedBox(width: 10,),
+            SizedBox(width: 10.w,),
             Text(date.toString(),
-                style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)),
-            const SizedBox(width: 10,),
+                style: bodyTextApp.bold.copyWith(color: Colors.black)),
+            SizedBox(width: 10.w,),
             Expanded(
               child: Text(title!,
-                style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                ),
+                style: contentDiaryText.copyWith(color: Colors.black),
                 overflow: TextOverflow.ellipsis,
               ),
             ),

@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 
 
 import '../model/diary_entity.dart';
@@ -39,15 +42,6 @@ class FirestoreRepository {
     }
   }
 
-//Set, Get, Remove data by normal method
-
-  /*Future<void> writeDiary({required DiaryEntity? newDiary})async{
-  // Atomically add a new region to the "regions" array field.
-    _docRefGet?.update({
-      "diaryEntities": FieldValue.arrayUnion([newDiary?.toJson()]),
-    });
-  }*/
-
   Future<void> writeDiary({required String? date, required DiaryEntity? newDiary})async {
     _docRefGet?.update({
         "diaryEntities.${date}": newDiary?.toJson(),
@@ -55,29 +49,10 @@ class FirestoreRepository {
   }
 
 
-  Future<void> deleteDiaryTest({required String date, required DiaryEntity diaryEntity})async{
+  Future<void> deleteDiaryTest({required String date})async{
     _docRefGet?.update({
-      "diaryEntities": {
-        "${date}": FieldValue.delete(),
-      }
+      "diaryEntities.${date}": FieldValue.delete(),
     });
   }
 
-  /*Future<void> modifyDiary({required DiaryEntity? oldDiary, required DiaryEntity? newDiary})async{
-// Atomically add a new region to the "regions" array field.
-   var Start = _docRefGet;
-   await _docRefGet?.update({
-      "diaryEntities" : FieldValue.arrayRemove([oldDiary?.toJson()]),
-    });
-   await _docRefGet?.update({
-      "diaryEntities": FieldValue.arrayUnion([newDiary?.toJson()]),
-    });
-  }*/
-
-
-  Future<void> deleteDiary({required DiaryEntity diaryEntity})async{
-    _docRefGet?.update({
-      "diaryEntities" : FieldValue.arrayRemove([diaryEntity.toJson()]),
-    });
-  }
 }

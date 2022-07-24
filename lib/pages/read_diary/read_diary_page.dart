@@ -50,7 +50,6 @@ class _ReadDiaryPageState extends State<ReadDiaryPage> with WidgetsBindingObserv
               return LoadingPage();
             }else if(diaryState is DiaryStateReadSuccess){
               diaryEntity = diaryState.diaryEntity;
-              var dateTime =diaryEntity!.dateTime;
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -58,7 +57,7 @@ class _ReadDiaryPageState extends State<ReadDiaryPage> with WidgetsBindingObserv
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(diaryEntity!.diaryTitle, style:  titleDiaryText,),
-                    Text('(${dateTime})', style: dateDiaryText),
+                    Text('(${diaryEntity!.dateTime})', style: dateDiaryText),
                     const Divider(height: 20,thickness: 3,indent: 150, endIndent: 150, color: Color.fromRGBO(
                         84, 92, 84, 1.0),),
                     Expanded(
@@ -103,7 +102,7 @@ class _ReadDiaryPageState extends State<ReadDiaryPage> with WidgetsBindingObserv
     elevation: 2,
     onSelected: (value){
       if(value == 1){
-        _diaryBloc?.add(DiaryEventDelete(diaryEntity: diaryEntity));
+        _diaryBloc?.add(DiaryEventDelete(date: diaryEntity!.dateTime));
         _userBloc?.add(UserEventGetUser());
         Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
         print('tap 1');

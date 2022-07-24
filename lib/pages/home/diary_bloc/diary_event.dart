@@ -35,10 +35,9 @@ class DiaryEventModify extends DiaryEvent{
 
 class DiaryEventDelete extends DiaryEvent{
   String? date;
-  DiaryEntity? diaryEntity;
 
-  DiaryEventDelete({required this.diaryEntity});
+  DiaryEventDelete({required this.date});
 
   @override
-  List<Object?> get props => [diaryEntity];
+  List<Object?> get props => [date];
 }

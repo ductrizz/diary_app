@@ -27,7 +27,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState>{
     }on FirebaseAuthException catch (_){
       emit(AuthenticationStateFailure(messageError: "Account doesn't exist"));
     }
-
   }
   Future<void> AuthenticationBlocSignIn(AuthenticationEventSignIn event, Emitter<AuthenticationState> emit) async{
 

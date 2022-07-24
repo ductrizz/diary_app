@@ -9,7 +9,6 @@ enum EmotionalStatus{
   angry, //tuc gian
   tired,
 }
-
 class IconStatus{
   static const double iconsize = 30;
   String status;
@@ -44,7 +43,7 @@ class IconStatus{
   static const Icon tired = Icon(FontAwesomeIcons.faceTired, size: iconsize, color: Color(0xFF0A0A0A),);
   static const Icon angry = Icon(FontAwesomeIcons.faceAngry, size: iconsize, color: Color(0xFF0A0A0A));
   static const Icon power = Icon(FontAwesomeIcons.solidHandBackFist, size: iconsize, color: Color(
-      0xFFF8F870));
+      0xFFE0881C));
 }
 
 extension UploadDocumentNameExt on  EmotionalStatus{

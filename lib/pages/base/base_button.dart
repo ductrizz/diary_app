@@ -48,7 +48,7 @@ class IconAndTextButton extends StatelessWidget {
             children: [
             Icon(baseIcon),
             SizedBox(width: 10,),
-            Text(buttonName, style: text16.semiBold,)
+            Text(buttonName, style: Theme.of(context).textTheme.button,)
           ],)),
     );
   }
@@ -93,7 +93,7 @@ class TextElevationButton extends StatelessWidget {
             ),
           ),
           onPressed: onPressed,
-          child: Text(buttonName, style: text16.semiBold,)),
+          child: Text(buttonName, style: Theme.of(context).textTheme.button,)),
     );
   }
 }
@@ -134,7 +134,7 @@ class TextInkWellButton extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 10, left: 10),
                 child: Icon(baseIcon, size: 20,),
               ) : SizedBox.shrink(),
-              Text(buttonName, style: text16),
+              Text(buttonName, style: Theme.of(context).textTheme.button),
             ],
           )),
     );
@@ -159,7 +159,7 @@ class CustomTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
         onPressed: onPressed,
-        child: Text(buttonName, style: buttonTextApp.copyWith(color: baseColor ?? Colors.black),));
+        child: Text(buttonName, style: Theme.of(context).textTheme.button,));
 
   }
 }

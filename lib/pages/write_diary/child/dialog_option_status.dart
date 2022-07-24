@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 SimpleDialog dialogOptionStatus(BuildContext context) => SimpleDialog(
   title: Text('How do you feel today?'),
   titleTextStyle: titleTextApp.copyWith(color: Colors.black),
+  elevation: 10,
   children:[
     _simpleDialogOption(context, EmotionalStatus.smiley),
     _simpleDialogOption(context, EmotionalStatus.happy),
@@ -13,7 +14,6 @@ SimpleDialog dialogOptionStatus(BuildContext context) => SimpleDialog(
     _simpleDialogOption(context, EmotionalStatus.angry),
     _simpleDialogOption(context, EmotionalStatus.power),
   ],
-  elevation: 10,
   //backgroundColor: Colors.green,
 );
 
@@ -24,7 +24,7 @@ SimpleDialogOption _simpleDialogOption(BuildContext context, EmotionalStatus emo
       child: Row(children: [
         IconStatus(status: emotionalStatus.name).icon,
         SizedBox(width: 10,),
-        Text(emotionalStatus.stringStatus, style: normalTextApp.copyWith(color: Colors.black),)
+        Text(emotionalStatus.stringStatus, style: bodyTextApp.copyWith(color: Colors.black),)
       ],)
   );
 }

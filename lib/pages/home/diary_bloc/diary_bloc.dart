@@ -58,8 +58,7 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState>{
   Future<void> _onDeleteDiary(DiaryEventDelete event, Emitter<DiaryState> emit) async{
     emit(DiaryStateDeleteInitial());
     try{
-      _firestoreRepository.deleteDiary(
-          diaryEntity: event.diaryEntity!);
+      _firestoreRepository.deleteDiaryTest(date: event.date!);
       emit(DiaryStateDeleteSuccess());
     }on Exception catch (_){
       emit(DiaryStateDeleteFailure());

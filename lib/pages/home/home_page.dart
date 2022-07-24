@@ -39,9 +39,9 @@ class _HomePageState extends State<HomePage> {
     if (fecthDiaryToday?.isNotEmpty ?? false){
       showDialog(context: context, builder: (BuildContext context) => AlertDialog(
         title: Text("Diary Already Exists!",),
-        titleTextStyle: titleTextApp.copyWith(color: Colors.red.shade900),
+        titleTextStyle: Theme.of(context).textTheme.headline1,
         content: Text("Today's diary already exists. Do you want to modify?"),
-        contentTextStyle: notificationTextApp.copyWith(color: Colors.black),
+        contentTextStyle: Theme.of(context).textTheme.bodyText2,
         actions: [
           CustomTextButton(onPressed: (){
             Navigator.of(context).pop();
@@ -68,8 +68,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text('HOME PAGE'),
+        title: const Text('My Diary'),
+        titleTextStyle: titleTextApp,
         actions: [
           IconButton(
             key: const Key('btnRouteWrite',),
@@ -89,16 +89,29 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      drawer: BlocBuilder<UserBloc, UserState>(
+          builder: (context, userState){
+            String? _displayName;
+            if(userState is UserStateInitial){
+              //
+            }else if(userState is UserStateSuccess){
+              userModel = userState.userModel;
+              _displayName = userModel?.displayName;
+            }else if(userState is UserStateFailure){
+              //
+            }
+            return _drawerHomePage(_displayName ?? "...");
+          }
+          ),
       body:  BlocBuilder<UserBloc, UserState>(
           builder: (context, userState){
             if(userState is UserStateInitial){
-              /*ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(" Write Success") ));*/
+              //
             }else if(userState is UserStateSuccess){
               userModel = userState.userModel;
               listDiary = userState.diaryEntities;
             }else if(userState is UserStateFailure){
-
+              //
             }
             return ListView.builder(
                 itemCount: listDiary?.length ?? 0,
@@ -109,6 +122,38 @@ class _HomePageState extends State<HomePage> {
           }),
     );
   }
+
+  Drawer _drawerHomePage(String displayName) => Drawer(
+        backgroundColor: Colors.white,
+        width: MediaQuery.of(context).size.width * 0.8,
+        elevation: 100.w,
+        child: Container(
+          margin: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              SizedBox(height: MediaQuery.of(context).padding.top + 10.w,),
+              Image.network("https://media.travelmag.vn/files/thuannguyen/2020/04/25/cach-chup-anh-dep-tai-da-lat-1-2306.jpeg",
+                width: 100,),
+              Text('${displayName}',style: contentDiaryText,),
+              TextInkWellButton(onPressed: (){},
+                buttonName: 'Profile',
+                baseIcon: Icons.person,),
+              TextInkWellButton(onPressed: (){},
+                buttonName: 'Write New Diary',
+                baseIcon: Icons.edit,),
+              TextInkWellButton(onPressed: (){},
+                buttonName: 'Change Password',
+                baseIcon: Icons.lock_reset,),
+              TextInkWellButton(onPressed: (){},
+                buttonName: 'Setting',
+                baseIcon: Icons.settings,),
+              TextInkWellButton(onPressed: (){},
+                buttonName: 'Sign-Out Account',
+                baseIcon: Icons.logout,),
+
+            ],
+          ),)
+    );
 }
 
 

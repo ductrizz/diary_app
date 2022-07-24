@@ -16,10 +16,19 @@ TextStyle get contentDiaryText => fontDiary.copyWith(fontWeight: FontWeight.w400
 
 TextStyle get dateDiaryText => fontDiary.copyWith(fontWeight: FontWeight.w500, fontSize: 18.sp, fontStyle: FontStyle.italic);
 
-TextStyle get titleTextApp => fontApp.copyWith(fontWeight: FontWeight.bold, fontSize: 25.sp);
-TextStyle get normalTextApp => fontApp.copyWith(fontWeight: FontWeight.w500, fontSize: 16.sp);
-TextStyle get buttonTextApp => fontApp.copyWith(fontWeight: FontWeight.w500, fontSize: 16.sp);
-TextStyle get notificationTextApp => fontApp.copyWith(fontWeight: FontWeight.w500, fontSize: 16.sp);
+TextStyle get titleTextApp => fontApp.copyWith(fontWeight: FontWeight.bold, fontSize: 22.sp);
+
+TextStyle get headerTextApp => fontApp.copyWith(fontWeight: FontWeight.bold, fontSize: 18.sp);
+
+TextStyle get bodyTextApp => fontApp.copyWith(fontWeight: FontWeight.w500, fontSize: 14.sp);
+
+TextStyle get buttonTextApp => fontApp.copyWith(fontWeight: FontWeight.w500, fontSize: 14.sp);
+
+TextStyle get notificationText => fontApp.copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp);
+
+TextStyle get contentDialogText => fontApp.copyWith(fontWeight: FontWeight.w500, fontSize: 14.sp);
+
+TextStyle get titleDialogText => fontApp.copyWith(fontWeight: FontWeight.bold, fontSize: 20.sp);
 
 
 
@@ -88,3 +97,54 @@ extension TextStyleExt on TextStyle {
   TextStyle get height22Per => copyWith(height: 2.2);
 }
 
+TextTheme customTextTheme({
+  required TextStyle titleDiaryText,
+  required TextStyle titleTextApp,
+  required TextStyle titleDialogText,
+  required TextStyle headerTextApp,
+  required TextStyle dateDiaryText,
+  required TextStyle contentDiaryText,
+  required TextStyle bodyTextApp,
+  required TextStyle buttonTextApp,
+  required TextStyle notificationText,
+  required TextStyle contentDialogText,
+}){
+  return TextTheme(
+    titleMedium: titleTextApp,
+    titleSmall: titleDiaryText,
+    headline1: titleDialogText,
+    headline2: headerTextApp,
+    bodyLarge: dateDiaryText,
+    bodyMedium: contentDiaryText,
+    bodyText1: bodyTextApp,
+    caption: notificationText,
+    button: buttonTextApp,
+    bodyText2: contentDialogText,
+  );
+}
+
+TextTheme get textThemeLight => customTextTheme(
+    titleDiaryText: titleDiaryText.copyWith(color: Colors.black),
+    titleTextApp: titleTextApp.copyWith(color: Colors.black),
+    titleDialogText: titleDialogText.copyWith(color: Colors.red.shade900),
+    headerTextApp: headerTextApp.copyWith(color: Colors.black),
+    dateDiaryText: dateDiaryText.copyWith(color: Colors.black),
+    contentDiaryText: contentDiaryText.copyWith(color: Colors.black),
+    bodyTextApp: bodyTextApp.copyWith(color: Colors.black),
+    buttonTextApp: buttonTextApp.copyWith(color: Colors.black),
+    notificationText: notificationText.copyWith(color: Colors.blue.shade800),
+    contentDialogText: contentDialogText..copyWith(color: Colors.blue.shade900)
+);
+
+TextTheme get textThemeDark => customTextTheme(
+    titleDiaryText: titleDiaryText.copyWith(color: Colors.white),
+    titleTextApp: titleTextApp.copyWith(color: Colors.white),
+    titleDialogText: titleDialogText.copyWith(color: Colors.yellowAccent),
+    headerTextApp: headerTextApp.copyWith(color: Colors.white),
+    dateDiaryText: dateDiaryText.copyWith(color: Colors.white),
+    contentDiaryText: contentDiaryText.copyWith(color: Colors.white),
+    bodyTextApp: bodyTextApp.copyWith(color: Colors.white),
+    buttonTextApp: buttonTextApp.copyWith(color: Colors.white),
+    notificationText: notificationText.copyWith(color: Colors.yellowAccent),
+    contentDialogText: contentDialogText..copyWith(color: Colors.yellowAccent)
+);

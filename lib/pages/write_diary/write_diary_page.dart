@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../generic_bloc/user_bloc/user_bloc.dart';
 import '../../model/diary_entity.dart';
 import '../../res/all_core.dart';
+import '../base/snackbar_messenger.dart';
 import '../home/diary_bloc/diary_bloc.dart';
 import 'child/dialog_option_status.dart';
 
@@ -39,7 +40,6 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
     super.initState();
   }
   void _pressWriteDiary(){
-
     newDiary = DiaryEntity(
         dateTime: _dateTime,
         diaryTitle: _titleDiaryController.text,
@@ -61,23 +61,18 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
       bloc: _diaryBloc,
       listener: (context, diaryState){
         if((diaryState is DiaryStateWriteInitial) || (diaryState is DiaryStateModifyInitial)){
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              //duration: Duration(seconds: 3),
-              content: Text("Initial")
-          ));
+          showSnackBarCus(context: context, message: "Save Diary!", duration: 1);
         }else if(diaryState is DiaryStateWriteSuccess){
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              duration: Duration(seconds: 3),
-              content: Text(" Write Success") ));
+          showSnackBarCus(context: context, message: "Successfully Write New Diary!");
           Navigator.of(context).pop();
         }else if(diaryState is DiaryStateModifySuccess){
           _diaryBloc?.add(DiaryEventRead(newDiary));
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              duration: Duration(seconds: 3),
-              content: Text(" Modify Success")));
+          showSnackBarCus(context: context, message: "Successfully Modify New Diary!");
           Navigator.of(context).pop();
-        }else{
-           print(('Failure :: ${diaryState}'));
+        }else if(diaryState is DiaryStateModifyFailure){
+          showSnackBarCus(context: context, message: "Modify is Failure : ${diaryState.messageError}");
+        }else if(diaryState is DiaryStateWriteFailure){
+          showSnackBarCus(context: context, message: "Write is Failure : ${diaryState.messageError}");
         }
       },
       child: Scaffold(
@@ -126,7 +121,7 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
         style: titleDiaryText,
       ),
       Text('(${_dateTime})', textAlign: TextAlign.right, style: dateDiaryText,),
-      const Divider(height: 15,thickness: 3,indent: 150, endIndent: 150, color: Color.fromRGBO(84, 92, 84, 1.0),),
+      Divider(height: 15.w,thickness: 3.w ,indent: 150.w , endIndent: 150.w, color: Color.fromRGBO(84, 92, 84, 1.0),),
     ],
   );
 
@@ -135,10 +130,10 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
       controller: _contentDiaryController,
       onChanged: (value) {
       },
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
           border: InputBorder.none,
           hintText: 'Diary Description',
-          hintStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic)
+          hintStyle: bodyTextApp,
       ),
       style: contentDiaryText,
       keyboardType: TextInputType.multiline,
@@ -151,7 +146,7 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
         context: context,
         builder: (BuildContext context){
           return dialogOptionStatus(context);
-    }
+        }
     );
   }
 }

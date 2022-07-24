@@ -23,7 +23,7 @@ class _VerificationPageState extends State<VerificationPage> {
   AuthenticationBloc? _authenticationBloc;
   Timer? timer;
   User? userFirebase;
-  var i = 1;
+
   @override
   void initState() {
     super.initState();
@@ -33,7 +33,6 @@ class _VerificationPageState extends State<VerificationPage> {
     checkEmailVerified();
     if (!isVerified) {
       timer = Timer.periodic(const Duration(seconds: 3), (_) {
-        print("Reload : ${++i}");
         checkEmailVerified();
       });
     }

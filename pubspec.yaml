@@ -37,6 +37,8 @@ dependencies:
   firebase_auth: ^3.3.19
   #cloud_firestore cho phép truy cập vào bộ lưu trữ dữ liệu Cloud Firestore.
   cloud_firestore: ^3.1.17
+  #firebase storage to save database:
+  firebase_storage: ^10.3.3
   google_sign_in: ^5.3.2
   google_fonts: ^3.0.1
   equatable: ^2.0.0
@@ -48,6 +50,7 @@ dependencies:
 
   permission_handler: ^10.0.0
   get: ^4.6.5
+  image_picker: ^0.8.4+9
 
 dev_dependencies:
   flutter_test:
