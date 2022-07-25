@@ -92,7 +92,6 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
           backgroundColor: const Color.fromRGBO(65, 165, 172, 0.5),
           onPressed: _pressWriteDiary,
           child: const Icon(Icons.save, color: Colors.black,),),
-        backgroundColor: ColorName.diaryBackground,
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(8.0),

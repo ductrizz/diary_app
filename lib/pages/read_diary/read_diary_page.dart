@@ -43,7 +43,7 @@ class _ReadDiaryPageState extends State<ReadDiaryPage> with WidgetsBindingObserv
           popupMenuButton()
         ],
       ),
-      backgroundColor: const Color.fromRGBO(219, 235, 236, 1.0),
+      //backgroundColor: diaryBackground,
       body: SafeArea(
           child: BlocBuilder<DiaryBloc, DiaryState>(builder: (context, diaryState){
             if(diaryState is DiaryStateReadInitial){
@@ -98,7 +98,7 @@ class _ReadDiaryPageState extends State<ReadDiaryPage> with WidgetsBindingObserv
       ),
     ],
     offset: Offset(5, 55),
-    color: Colors.white,
+   // color: Colors.white,
     elevation: 2,
     onSelected: (value){
       if(value == 1){

@@ -1,8 +1,10 @@
+import 'package:diary_app/generic_bloc/theme/theme_cubit.dart';
 import 'package:diary_app/pages/home/diary_bloc/diary_bloc.dart';
 import 'package:diary_app/pages/verification/verification_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'generic_bloc/authentication_bloc/authentication_bloc.dart';
 import 'generic_bloc/user_bloc/user_bloc.dart';
 import 'pages/home/home_page.dart';
@@ -37,34 +39,31 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => RegisterBloc(userRepository: userRepository)),
         BlocProvider(create: (context) => UserBloc(firestoreRepository: firestoreRepository)),
         BlocProvider(create: (context) => DiaryBloc(firestoreRepository: firestoreRepository)),
+        BlocProvider(create: (_) => ThemeCubit()),
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
-            builder: (context, authenticationState) {
-              if (authenticationState is AuthenticationStateUninitialized) {
-                Future.delayed(const Duration(seconds: 500));
-                return LoadingPage();
-              }else if (authenticationState is AuthenticationStateSuccess) {
-                /*bool isEmailVerified = authenticationState.userFirebase?.emailVerified ?? false;
-                print('isEmailVerified :: $isEmailVerified' );
-                if (isEmailVerified){
-                  return HomePage(userFirebase : authenticationState.userFirebase);
-                }else{
-                  return VerificationPage(userFirebase : authenticationState.userFirebase);
-                }*/
-                return VerificationPage();
-              }else if (authenticationState is AuthenticationStateFailure) {
-                return const LoginPage();
-              }else{
-                return const LoadingPage();
-              }
-            }
-        ),
-      ),
+      child: BlocBuilder<ThemeCubit, ThemeData>(
+        builder: (_, themeData){
+          print(themeData.brightness);
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: themeData,
+            home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+                builder: (context, authenticationState) {
+                  if (authenticationState is AuthenticationStateUninitialized) {
+                    Future.delayed(const Duration(seconds: 500));
+                    return LoadingPage();
+                  }else if (authenticationState is AuthenticationStateSuccess) {
+                    return VerificationPage();
+                  }else if (authenticationState is AuthenticationStateFailure) {
+                    return const LoginPage();
+                  }else{
+                    return const LoadingPage();
+                  }
+                }
+            ),
+          );
+        },
+      )
     );
   }
 }

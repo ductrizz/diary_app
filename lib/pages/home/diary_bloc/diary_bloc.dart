@@ -23,8 +23,6 @@ class DiaryBloc extends Bloc<DiaryEvent, DiaryState>{
     on<DiaryEventDelete>(_onDeleteDiary);
   }
 
-
-
   Future<void> _onReadDiary(DiaryEventRead event, Emitter<DiaryState> emit) async{
     emit(DiaryStateReadInitial());
     try{

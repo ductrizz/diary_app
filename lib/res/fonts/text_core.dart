@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../colors_core.dart';
 import '../dimens.dart';
-import 'font_app.dart';
+import 'font_family.dart';
 
 const TextStyle fontApp = TextStyle(fontFamily: FontFamily.fontNormally ,fontWeight: FontWeight.w400);
 
@@ -97,54 +97,34 @@ extension TextStyleExt on TextStyle {
   TextStyle get height22Per => copyWith(height: 2.2);
 }
 
-TextTheme customTextTheme({
-  required TextStyle titleDiaryText,
-  required TextStyle titleTextApp,
-  required TextStyle titleDialogText,
-  required TextStyle headerTextApp,
-  required TextStyle dateDiaryText,
-  required TextStyle contentDiaryText,
-  required TextStyle bodyTextApp,
-  required TextStyle buttonTextApp,
-  required TextStyle notificationText,
-  required TextStyle contentDialogText,
-}){
-  return TextTheme(
-    titleMedium: titleTextApp,
-    titleSmall: titleDiaryText,
-    headline1: titleDialogText,
-    headline2: headerTextApp,
-    bodyLarge: dateDiaryText,
-    bodyMedium: contentDiaryText,
-    bodyText1: bodyTextApp,
-    caption: notificationText,
-    button: buttonTextApp,
-    bodyText2: contentDialogText,
-  );
-}
 
-TextTheme get textThemeLight => customTextTheme(
-    titleDiaryText: titleDiaryText.copyWith(color: Colors.black),
-    titleTextApp: titleTextApp.copyWith(color: Colors.black),
-    titleDialogText: titleDialogText.copyWith(color: Colors.red.shade900),
-    headerTextApp: headerTextApp.copyWith(color: Colors.black),
-    dateDiaryText: dateDiaryText.copyWith(color: Colors.black),
-    contentDiaryText: contentDiaryText.copyWith(color: Colors.black),
-    bodyTextApp: bodyTextApp.copyWith(color: Colors.black),
-    buttonTextApp: buttonTextApp.copyWith(color: Colors.black),
-    notificationText: notificationText.copyWith(color: Colors.blue.shade800),
-    contentDialogText: contentDialogText..copyWith(color: Colors.blue.shade900)
+
+
+TextTheme get customTextTheme => TextTheme(
+  subtitle1: TextStyle(fontFamily: FontFamily.fontNormally, fontWeight: FontWeight.normal, fontSize: 14.sp),
+  subtitle2: TextStyle(fontFamily: FontFamily.fontNormally, fontWeight: FontWeight.bold, fontSize: 14.sp),
+  caption: TextStyle(fontFamily: FontFamily.fontNormally, fontWeight: FontWeight.normal, fontSize: 14.sp),
+  bodyText1: TextStyle(fontFamily: FontFamily.fontNormally, fontWeight: FontWeight.w400, fontSize: 18.sp),
+  bodyText2: TextStyle(fontFamily: FontFamily.fontDiary, fontWeight: FontWeight.w400, fontSize: 16.sp),
+  headline6: TextStyle(fontFamily: FontFamily.fontNormally, fontWeight: FontWeight.normal, fontSize: 24.sp),
+  headline5: TextStyle(fontFamily: FontFamily.fontNormally, fontWeight: FontWeight.bold, fontSize: 26.sp),
+  headline4: TextStyle(fontFamily: FontFamily.fontNormally, fontWeight: FontWeight.bold, fontSize: 28.sp),
+  headline3: TextStyle(fontFamily: FontFamily.fontNormally, fontWeight: FontWeight.w600, fontSize: 20.sp),
+  headline2: TextStyle(fontFamily: FontFamily.fontNormally, fontWeight: FontWeight.w600, fontSize: 24.sp),
+  headline1: TextStyle(fontFamily: FontFamily.fontNormally, fontWeight: FontWeight.bold, fontSize: 36.sp),
+  button: TextStyle(fontFamily: FontFamily.fontNormally, fontWeight: FontWeight.bold, fontSize: 18.sp),
 );
 
-TextTheme get textThemeDark => customTextTheme(
-    titleDiaryText: titleDiaryText.copyWith(color: Colors.white),
-    titleTextApp: titleTextApp.copyWith(color: Colors.white),
-    titleDialogText: titleDialogText.copyWith(color: Colors.yellowAccent),
-    headerTextApp: headerTextApp.copyWith(color: Colors.white),
-    dateDiaryText: dateDiaryText.copyWith(color: Colors.white),
-    contentDiaryText: contentDiaryText.copyWith(color: Colors.white),
-    bodyTextApp: bodyTextApp.copyWith(color: Colors.white),
-    buttonTextApp: buttonTextApp.copyWith(color: Colors.white),
-    notificationText: notificationText.copyWith(color: Colors.yellowAccent),
-    contentDialogText: contentDialogText..copyWith(color: Colors.yellowAccent)
+TextTheme get customPrimaryTextTheme => TextTheme(
+  subtitle1: TextStyle(fontFamily: FontFamily.fontDiary, fontWeight: FontWeight.normal, fontSize: 14.sp),
+  subtitle2: TextStyle(fontFamily: FontFamily.fontDiary, fontWeight: FontWeight.bold, fontSize: 14.sp),
+  caption: TextStyle(fontFamily: FontFamily.fontDiary, fontWeight: FontWeight.normal, fontSize: 12.sp),
+  bodyText1: TextStyle(fontFamily: FontFamily.fontDiary, fontWeight: FontWeight.w400, fontSize: 16.sp),
+  bodyText2: TextStyle(fontFamily: FontFamily.fontDiary, fontWeight: FontWeight.w400, fontSize: 16.sp),
+  headline6: TextStyle(fontFamily: FontFamily.fontDiary, fontWeight: FontWeight.normal, fontSize: 22.sp),
+  headline5: TextStyle(fontFamily: FontFamily.fontDiary, fontWeight: FontWeight.bold, fontSize: 24.sp),
+  headline4: TextStyle(fontFamily: FontFamily.fontDiary, fontWeight: FontWeight.bold, fontSize: 16.sp),
+  headline3: TextStyle(fontFamily: FontFamily.fontDiary, fontWeight: FontWeight.w600, fontSize: 18.sp),
+  headline2: TextStyle(fontFamily: FontFamily.fontDiary, fontWeight: FontWeight.w600, fontSize: 22.sp),
+  headline1: TextStyle(fontFamily: FontFamily.fontDiary, fontWeight: FontWeight.bold, fontSize: 34.sp),
 );

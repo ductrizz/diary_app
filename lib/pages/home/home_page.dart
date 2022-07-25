@@ -1,9 +1,10 @@
+import 'package:diary_app/generic_bloc/theme/theme_cubit.dart';
 import 'package:diary_app/pages/base/base_button.dart';
+import 'package:diary_app/pages/profile/profile_page.dart';
 import 'package:diary_app/pages/write_diary/write_diary_page.dart';
 import 'package:diary_app/res/all_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../generic_bloc/authentication_bloc/authentication_bloc.dart';
 import '../../generic_bloc/user_bloc/user_bloc.dart';
 import '../../model/diary_entity.dart';
@@ -22,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   UserBloc? _userBloc;
   UserModel? userModel;
   List<DiaryEntity>? listDiary;
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isDarkModel = false;
 
 
   @override
@@ -68,24 +69,16 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Diary'),
-        titleTextStyle: titleTextApp,
+        title: Text('My Diary'),
+        titleTextStyle: Theme.of(context).textTheme.headline5,
         actions: [
           IconButton(
-            key: const Key('btnRouteWrite',),
+            key: Key('btnRouteWrite',),
             onPressed: (){
               canWriteNew();
             },
-            icon: const Icon(Icons.add_box_outlined,),
+            icon: Icon(Icons.add_box_outlined,),
             tooltip: "Add Diary",
-          ),
-          IconButton(
-            key: const Key('btnSignOut',),
-            onPressed: (){
-              _authenticationBloc?.add(AuthenticationEventSignOut());
-            },
-            icon: const Icon(Icons.logout,),
-            tooltip: "Sign Out",
           ),
         ],
       ),
@@ -124,7 +117,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Drawer _drawerHomePage(String displayName) => Drawer(
-        backgroundColor: Colors.white,
+        //backgroundColor: Colors.white,
         width: MediaQuery.of(context).size.width * 0.8,
         elevation: 100.w,
         child: Container(
@@ -135,22 +128,36 @@ class _HomePageState extends State<HomePage> {
               Image.network("https://media.travelmag.vn/files/thuannguyen/2020/04/25/cach-chup-anh-dep-tai-da-lat-1-2306.jpeg",
                 width: 100,),
               Text('${displayName}',style: contentDiaryText,),
-              TextInkWellButton(onPressed: (){},
+              TextInkWellButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => ProfilePage()));
+              },
                 buttonName: 'Profile',
                 baseIcon: Icons.person,),
               TextInkWellButton(onPressed: (){},
-                buttonName: 'Write New Diary',
-                baseIcon: Icons.edit,),
-              TextInkWellButton(onPressed: (){},
                 buttonName: 'Change Password',
                 baseIcon: Icons.lock_reset,),
-              TextInkWellButton(onPressed: (){},
+              TextInkWellButton(onPressed: (){
+              },
                 buttonName: 'Setting',
                 baseIcon: Icons.settings,),
-              TextInkWellButton(onPressed: (){},
+              Container(
+                margin: EdgeInsets.only(left: 30),
+                child: Column(
+                  children: [
+                    TextInkWellButton(onPressed: (){
+                      context.read<ThemeCubit>().toggleTheme();
+                      },
+                      buttonName: 'Change Background App',
+                      baseIcon: Icons.brightness_6,),
+                  ],
+                ),
+              ),
+              TextInkWellButton(onPressed: (){
+                _authenticationBloc?.add(AuthenticationEventSignOut());
+              },
                 buttonName: 'Sign-Out Account',
                 baseIcon: Icons.logout,),
-
             ],
           ),)
     );

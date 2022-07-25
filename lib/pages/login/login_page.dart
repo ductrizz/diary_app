@@ -96,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
         TextField(
           keyboardType: TextInputType.emailAddress,
           controller: _entryEmailController,
+          style: Theme.of(context).textTheme.bodyText1,
           obscureText: false,
           decoration: InputDecoration(
             labelText: 'Email',
@@ -105,6 +106,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         TextField(
           controller: _entryPasswordController,
+          style: Theme.of(context).textTheme.bodyText1,
           obscureText: true,
           decoration: InputDecoration(
             labelText: 'Password',
