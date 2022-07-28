@@ -1,13 +1,12 @@
 import 'package:diary_app/generic_bloc/authentication_bloc/authentication_bloc.dart';
+import 'package:diary_app/generic_bloc/authentication_bloc/loading_dialog.dart';
 import 'package:diary_app/repositories/user_repository.dart';
 import 'package:diary_app/res/all_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../model/user_model.dart';
 import '../base/base_button.dart';
-import '../login/login_page.dart';
 import 'register_bloc/register_bloc.dart';
 
 
@@ -49,7 +48,7 @@ class _RegisterPageState extends State<RegisterPage> {
         if(registerState.isFailure){
           print('Register is isFailure');
         }else if(registerState.isSubmitting){
-          print('Register is Submitting');
+
         }else if(registerState.isSuccess){
           _authenticationBloc?.add(AuthenticationEventSignOut());
           Navigator.pop(context);

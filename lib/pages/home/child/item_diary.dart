@@ -21,7 +21,7 @@ class ItemDiary extends StatelessWidget {
     //DiaryBloc _diaryBloc = BlocProvider.of<DiaryBloc>(context);
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15.w),
+        borderRadius: BorderRadius.circular(25.w),
         gradient:  LinearGradient(
             colors: [Colors.white, Colors.cyan.shade100],
             begin: Alignment.topCenter,

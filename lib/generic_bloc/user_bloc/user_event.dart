@@ -17,3 +17,7 @@ class UserEventUpdateInforUser extends UserEvent{
   @override
   List<Object?> get props => [userModel];
 }
+
+class UserEventImagePicker extends UserEvent {}
+
+

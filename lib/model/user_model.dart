@@ -11,9 +11,11 @@ class UserModel {
     this.email,
     this.displayName,
     this.birthday,
-    this.diaryEntities,});
+    this.diaryEntities,
+    this.imageUrl,
+  });
 
-  UserModel.fromJson(dynamic json)
+  /*UserModel.fromJson(dynamic json)
       : this(
           uid: json['uid'] as String,
           email: json['email']! as String,
@@ -21,9 +23,10 @@ class UserModel {
           birthday: json['birthday']! as String,
           isVerified: json['isVerified']! as bool,
           diaryEntities: json['diaryEntities']! as Map,
+          imageUrl: json['imageUrl']! as String,
           //diaryEntities: json['diaryEntities']! as List<DiaryEntity>,
 
-        );
+        );*/
 
   String? uid;
   bool? isVerified;
@@ -31,17 +34,19 @@ class UserModel {
   String? displayName;
   String? birthday;
   Map? diaryEntities;
+  final String? imageUrl;
   //List<dynamic>? diaryEntities;
 
-  Map<String, Object?> toJson() {
+  /*Map<String, Object?> toJson() {
     return {
       'uid': uid,
       'displayName': displayName,
       'birthday': birthday,
       'email': email,
       'diaryEntities': diaryEntities,
+      'imageUrl': imageUrl,
     };
-  }
+  }*/
 
   UserModel copyWith({
     bool? isVerified,
@@ -49,7 +54,8 @@ class UserModel {
     String? email,
     String? displayName,
     String? birthday,
-    Map? diaryEntities
+    Map? diaryEntities,
+    String? imageUrl
     //List<DiaryEntity>? diaryEntities
   }) {
     return UserModel(
@@ -59,6 +65,7 @@ class UserModel {
         birthday: birthday ?? this.birthday,
         isVerified: isVerified ?? this.isVerified,
         diaryEntities: diaryEntities ?? this.diaryEntities,
+        imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 
@@ -75,6 +82,7 @@ class UserModel {
       birthday: data?['birthday'],
       diaryEntities: data?['diaryEntities'],
       isVerified: data?['isVerified'],
+      imageUrl: data?['imageUrl'],
     );
   }
 
@@ -85,12 +93,12 @@ class UserModel {
       "displayName": displayName,
       "birthday": birthday,
       "diaryEntities": diaryEntities,
-      "isVerified": isVerified
+      "imageUrl": imageUrl
     };
   }
 
   @override
   String toString() {
-    return 'UserModel{uid: $uid, isVerified: $isVerified, email: $email, displayName: $displayName, birthday: $birthday, diaryEntities: $diaryEntities}';
+    return 'UserModel{uid: $uid, isVerified: $isVerified, email: $email, displayName: $displayName, birthday: $birthday, diaryEntities: $diaryEntities, imageUrl : $imageUrl}';
   }
 }

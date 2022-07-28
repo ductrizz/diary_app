@@ -1,3 +1,4 @@
+import 'package:diary_app/generic_bloc/authentication_bloc/loading_dialog.dart';
 import 'package:diary_app/pages/base/emotional_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,10 +36,15 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
       _selectedStatus = _diaryEntity!.status;
     }else{
       _dateTime = DateTime.now().toDay;
-      _displayDialog(context);
     }
     super.initState();
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
   void _pressWriteDiary(){
     newDiary = DiaryEntity(
         dateTime: _dateTime,
@@ -53,6 +59,7 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
       _diaryBloc?.add(DiaryEventWrite(date: _dateTime ,newDiary: newDiary));
     }
     BlocProvider.of<UserBloc>(context).add(UserEventGetUser());
+    Navigator.of(context).pop();
   }
 
   @override
@@ -61,14 +68,12 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
       bloc: _diaryBloc,
       listener: (context, diaryState){
         if((diaryState is DiaryStateWriteInitial) || (diaryState is DiaryStateModifyInitial)){
-          showSnackBarCus(context: context, message: "Save Diary!", duration: 1);
+
         }else if(diaryState is DiaryStateWriteSuccess){
           showSnackBarCus(context: context, message: "Successfully Write New Diary!");
-          Navigator.of(context).pop();
         }else if(diaryState is DiaryStateModifySuccess){
           _diaryBloc?.add(DiaryEventRead(newDiary));
           showSnackBarCus(context: context, message: "Successfully Modify New Diary!");
-          Navigator.of(context).pop();
         }else if(diaryState is DiaryStateModifyFailure){
           showSnackBarCus(context: context, message: "Modify is Failure : ${diaryState.messageError}");
         }else if(diaryState is DiaryStateWriteFailure){

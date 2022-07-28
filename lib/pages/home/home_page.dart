@@ -125,8 +125,12 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               SizedBox(height: MediaQuery.of(context).padding.top + 10.w,),
-              Image.network("https://media.travelmag.vn/files/thuannguyen/2020/04/25/cach-chup-anh-dep-tai-da-lat-1-2306.jpeg",
-                width: 100,),
+              Container(
+                child: CircleAvatar(
+                  radius: 80,
+                  backgroundImage: NetworkImage("https://media.travelmag.vn/files/thuannguyen/2020/04/25/cach-chup-anh-dep-tai-da-lat-1-2306.jpeg"),
+                ),
+              ),
               Text('${displayName}',style: contentDiaryText,),
               TextInkWellButton(onPressed: (){
                 Navigator.push(context, MaterialPageRoute(

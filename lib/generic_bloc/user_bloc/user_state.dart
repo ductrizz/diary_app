@@ -28,3 +28,25 @@ class UserStateFailure extends UserState{
   @override
   List<Object?> get props => [];
 }
+
+class UserStateImageInitial extends UserState {}
+
+class UserStateImagePickerInProgress extends UserState {}
+
+class UserStateImagePickerSuccessful extends UserState {
+  File image;
+  UserStateImagePickerSuccessful(this.image);
+
+  @override
+  List<Object> get props => [image];
+}
+
+class UserStateImagePickerFailed extends UserState {
+  String message;
+
+  UserStateImagePickerFailed(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+

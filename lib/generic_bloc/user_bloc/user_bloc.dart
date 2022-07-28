@@ -1,11 +1,12 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
 import '../../model/diary_entity.dart';
 import '../../model/user_model.dart';
+import '../../repositories/firebase_storage_repository.dart';
 import '../../repositories/firestore_repository.dart';
 
 part 'user_event.dart';
@@ -13,10 +14,16 @@ part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState>{
   final FirestoreRepository? _firestoreRepository;
-  UserBloc({FirestoreRepository? firestoreRepository}):
+  FirebaseStorageRepository? _firebaseStorageRepository;
+  UserBloc({
+    FirestoreRepository? firestoreRepository,
+    FirebaseStorageRepository? firebaseStorageRepository,
+  }): _firebaseStorageRepository = firebaseStorageRepository,
         _firestoreRepository = firestoreRepository, super(UserStateInitial()){
     on<UserEventGetUser>(_getUserModel);
     on<UserEventUpdateInforUser>(_updateInforUser);
+    on<UserEventImagePicker>(_handleImagePicking);
+   /* on<UserEventSaveInterests>(_handleSaveInterests);*/
   }
 
   Future<void> _getUserModel(UserEventGetUser event, Emitter<UserState> emit) async{
@@ -42,5 +49,23 @@ class UserBloc extends Bloc<UserEvent, UserState>{
 
   }
 
+  FutureOr<void> _handleImagePicking(
+      UserEventImagePicker event, Emitter<UserState> emit) async {
+    try {
+      emit(UserStateImagePickerInProgress());
+      final String imagePath = await _firebaseStorageRepository!.pickImageFromGallery();
+      if (imagePath.isNotEmpty) {
+        File image = File(imagePath);
+        //emit(ImagePickerSuccessful(image));
+        await _firebaseStorageRepository?.uploadImage(image);
+        emit(UserStateImagePickerSuccessful(image));
+      } else {
+        emit(UserStateImagePickerFailed('No Image Selected'));
+      }
+    } catch (error) {
+      emit(UserStateImagePickerFailed(error.toString()));
+    }
+  }
 
 }
+

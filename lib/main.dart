@@ -1,6 +1,7 @@
 import 'package:diary_app/generic_bloc/theme/theme_cubit.dart';
 import 'package:diary_app/pages/home/diary_bloc/diary_bloc.dart';
 import 'package:diary_app/pages/verification/verification_page.dart';
+import 'package:diary_app/repositories/firebase_storage_repository.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   UserRepository userRepository;
   final FirestoreRepository firestoreRepository = FirestoreRepository();
+  final FirebaseStorageRepository firebaseStorageRepository = FirebaseStorageRepository();
 
   MyApp({Key? key, required this.userRepository}) : super(key: key);
 
@@ -37,7 +39,7 @@ class MyApp extends StatelessWidget {
           ..add(AuthenticationEventStart())),
         BlocProvider(create: (context) => LoginBloc(userRepository: userRepository)),
         BlocProvider(create: (context) => RegisterBloc(userRepository: userRepository)),
-        BlocProvider(create: (context) => UserBloc(firestoreRepository: firestoreRepository)),
+        BlocProvider(create: (context) => UserBloc(firestoreRepository: firestoreRepository, firebaseStorageRepository: firebaseStorageRepository)),
         BlocProvider(create: (context) => DiaryBloc(firestoreRepository: firestoreRepository)),
         BlocProvider(create: (_) => ThemeCubit()),
       ],
