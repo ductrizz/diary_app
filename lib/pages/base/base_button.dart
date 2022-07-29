@@ -46,7 +46,7 @@ class IconAndTextButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-            Icon(baseIcon),
+            Icon(baseIcon, color: Theme.of(context).primaryColor,),
             SizedBox(width: 10,),
             Text(buttonName, style: Theme.of(context).textTheme.button,)
           ],)),

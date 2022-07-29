@@ -13,6 +13,7 @@ class UserModel {
     this.birthday,
     this.diaryEntities,
     this.imageUrl,
+    this.gender,
   });
 
   /*UserModel.fromJson(dynamic json)
@@ -35,6 +36,7 @@ class UserModel {
   String? birthday;
   Map? diaryEntities;
   final String? imageUrl;
+  String? gender;
   //List<dynamic>? diaryEntities;
 
   /*Map<String, Object?> toJson() {
@@ -55,17 +57,19 @@ class UserModel {
     String? displayName,
     String? birthday,
     Map? diaryEntities,
-    String? imageUrl
+    String? imageUrl,
+    String? gender,
     //List<DiaryEntity>? diaryEntities
   }) {
     return UserModel(
-        uid: uid ?? this.uid,
-        email: email ?? this.email,
-        displayName: displayName ?? this.displayName,
-        birthday: birthday ?? this.birthday,
-        isVerified: isVerified ?? this.isVerified,
-        diaryEntities: diaryEntities ?? this.diaryEntities,
-        imageUrl: imageUrl ?? this.imageUrl,
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      displayName: displayName ?? this.displayName,
+      birthday: birthday ?? this.birthday,
+      isVerified: isVerified ?? this.isVerified,
+      diaryEntities: diaryEntities ?? this.diaryEntities,
+      imageUrl: imageUrl ?? this.imageUrl,
+      gender: gender ?? this.gender,
     );
   }
 
@@ -83,6 +87,7 @@ class UserModel {
       diaryEntities: data?['diaryEntities'],
       isVerified: data?['isVerified'],
       imageUrl: data?['imageUrl'],
+      gender: data?['gender'],
     );
   }
 
@@ -93,7 +98,8 @@ class UserModel {
       "displayName": displayName,
       "birthday": birthday,
       "diaryEntities": diaryEntities,
-      "imageUrl": imageUrl
+      "imageUrl": imageUrl,
+      "gender" : gender
     };
   }
 

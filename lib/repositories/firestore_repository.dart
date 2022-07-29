@@ -42,6 +42,15 @@ class FirestoreRepository {
     }
   }
 
+  Future<void> updateInfor({required UserModel? userModel}) async {
+    _docRefGet = await docRef();
+    await _docRefGet?.update({
+      "displayName" : userModel?.displayName ?? "",
+      "birthday" : userModel?.birthday ?? "" ,
+
+    });
+  }
+
   Future<void> writeDiary({required String? date, required DiaryEntity? newDiary})async {
     _docRefGet?.update({
         "diaryEntities.${date}": newDiary?.toJson(),

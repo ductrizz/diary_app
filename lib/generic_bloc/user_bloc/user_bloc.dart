@@ -46,7 +46,7 @@ class UserBloc extends Bloc<UserEvent, UserState>{
   }
 
   void _updateInforUser(UserEventUpdateInforUser event, Emitter<UserState> emit){
-
+    _firestoreRepository?.updateInfor(userModel: event.userModel);
   }
 
   FutureOr<void> _handleImagePicking(

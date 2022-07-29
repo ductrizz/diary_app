@@ -1,6 +1,7 @@
 import 'package:diary_app/pages/child_widget/avata_widget.dart';
 import 'package:diary_app/pages/profile/child/edit_profile_page.dart';
 import 'package:diary_app/pages/profile/child/profile_widget.dart';
+import 'package:diary_app/repositories/firestore_repository.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -21,8 +22,14 @@ class ProfilePage extends StatelessWidget {
           Expanded(
             flex: 2,
             child: ProfileWidget(
-                editPress: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+                editPress: () async{
+                  var user = await FirestoreRepository().getUserCredentials();
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => EditProfilePage(
+                        displayName: user.displayName ?? "",
+                        gender: user.gender ?? "",
+                        birthday: user.birthday ?? "",
+                      )));
                 },
               ),
           ),
