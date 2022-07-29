@@ -10,42 +10,40 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  TextEditingController _genderController = TextEditingController();
+  TextEditingController _birthdayController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(),
+      appBar: AppBar(
+        title: const Text("Edit Profile"),
+        titleTextStyle: Theme.of(context).textTheme.headline5,
+      ),
+      body: Container(
+        margin: EdgeInsets.all(10.w),
+        child: Column(
+          children: [
+            TextField(
+              controller: _genderController,
+              style: Theme.of(context).textTheme.bodyText1,
+              obscureText: false,
+              decoration: const InputDecoration(
+                labelText: 'Gender',
+              ),
+            ),
+            TextField(
+              controller: _birthdayController,
+              style: Theme.of(context).textTheme.bodyText1,
+              obscureText: false,
+              decoration: const InputDecoration(
+                labelText: 'Birthday',
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _imageProfile() => Container(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        InkWell(
-          onTap: (){
-            print("Change Picture");
-          },
-          child: CircleAvatar(
-            radius: 80,
-            backgroundImage: NetworkImage("//image_url"),
-          ),
-        ),
-        SizedBox(height: 10.w,),
-        Text("Name :: Le duc tri",
-          style: bodyTextApp.bold,
-        ),
-      ],
-    ),
-    height: 250,
-    width: double.infinity,
-    decoration: const BoxDecoration(
-      gradient: LinearGradient(
-          colors: [Colors.cyanAccent, Colors.blue],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter),
-      borderRadius: BorderRadius.only(
-          bottomRight: Radius.circular(20.0),
-          bottomLeft: Radius.circular(20.0)),
-    ),
-  );
 }

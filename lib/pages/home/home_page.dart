@@ -1,5 +1,6 @@
 import 'package:diary_app/generic_bloc/theme/theme_cubit.dart';
 import 'package:diary_app/pages/base/base_button.dart';
+import 'package:diary_app/pages/child_widget/avata_widget.dart';
 import 'package:diary_app/pages/profile/profile_page.dart';
 import 'package:diary_app/pages/write_diary/write_diary_page.dart';
 import 'package:diary_app/res/all_core.dart';
@@ -28,10 +29,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    super.initState();
     _authenticationBloc = BlocProvider.of<AuthenticationBloc>(context);
     _userBloc = BlocProvider.of<UserBloc>(context)
       ..add(UserEventGetUser());
-    super.initState();
+  }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
   }
 
   void canWriteNew(){
@@ -67,8 +72,18 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return BlocListener<UserBloc, UserState>(listener: (context, userState){
+      if(userState is UserStateInitial){
+        //
+      }else if(userState is UserStateSuccess){
+        userModel = userState.userModel;
+        listDiary = userState.diaryEntities;
+      }else if(userState is UserStateFailure){
+        //
+      }
+    },
+      child: Scaffold(
+        appBar: AppBar(
         title: Text('My Diary'),
         titleTextStyle: Theme.of(context).textTheme.headline5,
         actions: [
@@ -82,30 +97,14 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      drawer: BlocBuilder<UserBloc, UserState>(
-          builder: (context, userState){
-            String? _displayName;
-            if(userState is UserStateInitial){
-              //
-            }else if(userState is UserStateSuccess){
-              userModel = userState.userModel;
-              _displayName = userModel?.displayName;
-            }else if(userState is UserStateFailure){
-              //
+        drawer: BlocBuilder<UserBloc, UserState>(
+            builder: (context, userState){
+              return _drawerHomePage(userModel?? UserModel());
             }
-            return _drawerHomePage(_displayName ?? "...");
-          }
           ),
-      body:  BlocBuilder<UserBloc, UserState>(
+        drawerEnableOpenDragGesture: false,
+        body:  BlocBuilder<UserBloc, UserState>(
           builder: (context, userState){
-            if(userState is UserStateInitial){
-              //
-            }else if(userState is UserStateSuccess){
-              userModel = userState.userModel;
-              listDiary = userState.diaryEntities;
-            }else if(userState is UserStateFailure){
-              //
-            }
             return ListView.builder(
                 itemCount: listDiary?.length ?? 0,
                 itemBuilder: (context, index){
@@ -113,57 +112,74 @@ class _HomePageState extends State<HomePage> {
                   return ItemDiary(diaryEntity : _diaryEntity);
                 });
           }),
-    );
+    ),);
   }
 
-  Drawer _drawerHomePage(String displayName) => Drawer(
+  Drawer _drawerHomePage(UserModel userModel) => Drawer(
         //backgroundColor: Colors.white,
         width: MediaQuery.of(context).size.width * 0.8,
         elevation: 100.w,
-        child: Container(
-          margin: EdgeInsets.all(10),
-          child: Column(
-            children: [
-              SizedBox(height: MediaQuery.of(context).padding.top + 10.w,),
-              Container(
-                child: CircleAvatar(
-                  radius: 80,
-                  backgroundImage: NetworkImage("https://media.travelmag.vn/files/thuannguyen/2020/04/25/cach-chup-anh-dep-tai-da-lat-1-2306.jpeg"),
-                ),
+        child: Column(
+          children: [
+            /*Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Colors.cyanAccent, Colors.blue],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter),
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.w), bottomRight: Radius.circular(30.w))
               ),
-              Text('${displayName}',style: contentDiaryText,),
-              TextInkWellButton(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => ProfilePage()));
-              },
-                buttonName: 'Profile',
-                baseIcon: Icons.person,),
-              TextInkWellButton(onPressed: (){},
-                buttonName: 'Change Password',
-                baseIcon: Icons.lock_reset,),
-              TextInkWellButton(onPressed: (){
-              },
-                buttonName: 'Setting',
-                baseIcon: Icons.settings,),
-              Container(
-                margin: EdgeInsets.only(left: 30),
-                child: Column(
-                  children: [
-                    TextInkWellButton(onPressed: (){
-                      context.read<ThemeCubit>().toggleTheme();
+              *//*child: Column(
+                children: [
+                  SizedBox(height: MediaQuery.of(context).padding.top + 10.w,),
+                  CircleAvatar(
+                    radius: 80,
+                    backgroundImage: NetworkImage(userModel.imageUrl ?? "https://media.travelmag.vn/files/thuannguyen/2020/04/25/cach-chup-anh-dep-tai-da-lat-1-2306.jpeg"),
+                  ),
+                  Text('${userModel.displayName}', style: contentDiaryText,),
+                ],
+              ),*//*
+            ),*/
+
+            Expanded(child: AvatarWidget(radiusCircle: 60, allowEdit: false,)),
+            Expanded(
+              flex: 3,
+              child: Column(children: [
+                TextInkWellButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) =>  ProfilePage()));
+                },
+                  buttonName: 'Profile',
+                  baseIcon: Icons.person,),
+                TextInkWellButton(onPressed: (){},
+                  buttonName: 'Change Password',
+                  baseIcon: Icons.lock_reset,),
+                TextInkWellButton(onPressed: (){
+                },
+                  buttonName: 'Setting',
+                  baseIcon: Icons.settings,),
+                Container(
+                  margin: EdgeInsets.only(left: 30),
+                  child: Column(
+                    children: [
+                      TextInkWellButton(onPressed: (){
+                        context.read<ThemeCubit>().toggleTheme();
                       },
-                      buttonName: 'Change Background App',
-                      baseIcon: Icons.brightness_6,),
-                  ],
+                        buttonName: 'Change Background App',
+                        baseIcon: Icons.brightness_6,),
+                    ],
+                  ),
                 ),
-              ),
-              TextInkWellButton(onPressed: (){
-                _authenticationBloc?.add(AuthenticationEventSignOut());
-              },
-                buttonName: 'Sign-Out Account',
-                baseIcon: Icons.logout,),
-            ],
-          ),)
+                TextInkWellButton(onPressed: (){
+                  _authenticationBloc?.add(AuthenticationEventSignOut());
+                },
+                  buttonName: 'Sign-Out Account',
+                  baseIcon: Icons.logout,),
+              ],),
+            )
+          ],
+        )
     );
 }
 
