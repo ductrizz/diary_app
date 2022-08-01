@@ -11,7 +11,7 @@ part 'diary_event.dart';
 part 'diary_state.dart';
 
 class DiaryBloc extends Bloc<DiaryEvent, DiaryState>{
-  FirestoreRepository _firestoreRepository;
+  final FirestoreRepository _firestoreRepository;
 
   DiaryBloc({
     required FirestoreRepository firestoreRepository}) :

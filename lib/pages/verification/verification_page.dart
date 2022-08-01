@@ -12,7 +12,7 @@ import '../base/base_button.dart';
 
 class VerificationPage extends StatefulWidget {
 
-  VerificationPage({Key? key}) : super(key: key);
+  const VerificationPage({Key? key}) : super(key: key);
 
   @override
   State<VerificationPage> createState() => _VerificationPageState();
@@ -55,10 +55,10 @@ class _VerificationPageState extends State<VerificationPage> {
   }
 
   @override
-  Widget build(BuildContext context) => isVerified ? HomePage() :Scaffold(
+  Widget build(BuildContext context) => isVerified ? const HomePage() :Scaffold(
     backgroundColor: Colors.cyan[100],
     body: SafeArea(
-      child: Container(
+      child: SizedBox(
         height: 400,
         width: double.infinity,
         child: Column(
@@ -111,14 +111,14 @@ class _VerificationPageState extends State<VerificationPage> {
           'A verification link has been sent to your mail, Click on the link to continue with your registration. Don\'t forget to check Spam Folders',
           style: text16.semiBold,
         ),
-        SizedBox(height: 20,),
+        SizedBox(height: 20.w,),
         Text(' If you are not automatically directed to the homepage after verification, click button "Reload" below',
           style: text16.semiBold),
       ],
     ),);
 
   Widget _buttonActions() => Container(
-    margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+    margin: EdgeInsets.only(top: 10.w, left: 10.w, right: 10.w),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -151,7 +151,6 @@ class _VerificationPageState extends State<VerificationPage> {
       TextButton(
           onPressed: () async{
             await FirebaseAuth.instance.currentUser?.sendEmailVerification();
-            print("Email :: ${FirebaseAuth.instance.currentUser?.email}");
           },
           child: Text("Resent Verificaiton Email",
             style: text18.copyWith(color: Colors.red, fontStyle: FontStyle.italic, fontWeight: FontWeight.w500, decoration: TextDecoration.underline),

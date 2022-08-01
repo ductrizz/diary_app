@@ -1,4 +1,3 @@
-import 'package:diary_app/pages/profile/child/edit_profile_page.dart';
 import 'package:diary_app/res/all_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +20,7 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidgetState extends State<ProfileWidget> {
   VoidCallback? get _editPress => widget.editPress;
   UserBloc? _userBloc;
-  FirestoreRepository _firestoreRepository = FirestoreRepository();
+  final FirestoreRepository _firestoreRepository = FirestoreRepository();
 
   @override
   void initState() {
@@ -37,7 +36,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
             future: _firestoreRepository.getUserCredentials(),
             builder: (BuildContext context, snapshort){
               if(snapshort.hasError){
-                return Text("Something went wrong");
+                return const Text("Something went wrong");
               }
               if((snapshort.connectionState == ConnectionState.done) && snapshort.hasData){
                 var userModel = snapshort.data;
@@ -67,13 +66,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       ),
 
       userFields(context,
-          icon: Icons.person_outline, title: 'Gender', details: "Male"),
+          icon: Icons.person_outline, title: 'Gender', details: "${userModel?.gender}"),
 
       userFields(
           context,
           icon: Icons.calendar_month,
           title: 'Birthday',
-          details: "25-08-1993"),
+          details: "${userModel?.birthday}"),
     ],
   );
 
@@ -124,6 +123,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       ),
     );
   }
+
 }
 
 

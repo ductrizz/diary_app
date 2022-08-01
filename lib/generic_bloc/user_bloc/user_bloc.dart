@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:diary_app/res/all_core.dart';
 import '../../model/diary_entity.dart';
 import '../../model/user_model.dart';
 import '../../repositories/firebase_storage_repository.dart';
@@ -14,7 +14,7 @@ part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState>{
   final FirestoreRepository? _firestoreRepository;
-  FirebaseStorageRepository? _firebaseStorageRepository;
+  final FirebaseStorageRepository? _firebaseStorageRepository;
   UserBloc({
     FirestoreRepository? firestoreRepository,
     FirebaseStorageRepository? firebaseStorageRepository,
@@ -35,18 +35,24 @@ class UserBloc extends Bloc<UserEvent, UserState>{
         DiaryEntity? diaryEntity = DiaryEntity.fromJson(e);
         return diaryEntity;
       }).cast<DiaryEntity>().toList();
-      diaryEntities?.sort((a, b) => ((a.dateTime ?? "").compareTo(b.dateTime ?? "")));
+      diaryEntities?.sort((a, b) => ((a.dateTime?.toSinceEpoch ?? 0).compareTo(b.dateTime?.toSinceEpoch ?? 0)));
       List<DiaryEntity>? listDiary = diaryEntities?.reversed.toList();
 
       emit(UserStateSuccess(userModel: userModel, diaryEntities: listDiary));
     }catch (e){
-      print(e);
       emit(UserStateFailure());
     }
   }
 
-  void _updateInforUser(UserEventUpdateInforUser event, Emitter<UserState> emit){
-    _firestoreRepository?.updateInfor(userModel: event.userModel);
+  Future<void> _updateInforUser(UserEventUpdateInforUser event, Emitter<UserState> emit) async{
+    try{
+      emit(UserStateUpdateInforProgress());
+      await _firestoreRepository?.updateInfor(userModel: event.userModel);
+      emit(UserStateUpdateInforSuccess());
+    }catch (error){
+      emit(UserStateUpdateInforFailure(error.toString()));
+    }
+
   }
 
   FutureOr<void> _handleImagePicking(

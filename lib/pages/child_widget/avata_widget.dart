@@ -24,7 +24,7 @@ class _AvatarWidgetState extends State<AvatarWidget> {
   double get _radiusCircle=> widget.radiusCircle;
   bool get _allowEdit => widget.allowEdit;
   UserBloc? _userBloc;
-  FirestoreRepository _firestoreRepository = FirestoreRepository();
+  final FirestoreRepository _firestoreRepository = FirestoreRepository();
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _AvatarWidgetState extends State<AvatarWidget> {
             future: _firestoreRepository.getUserCredentials(),
               builder: (BuildContext context, snapshort){
                 if(snapshort.hasError){
-                  return Text("Something went wrong");
+                  return const Text("Something went wrong");
                 }
                 if((snapshort.connectionState == ConnectionState.done) && snapshort.hasData){
                   var userModel = snapshort.data;
@@ -68,7 +68,7 @@ class _AvatarWidgetState extends State<AvatarWidget> {
         _allowEdit ? Container(
           alignment: Alignment.centerRight,
           child: IconButton(
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
             tooltip: "Change Picture",
             onPressed: (){
               _userBloc?.add(UserEventImagePicker());
@@ -77,7 +77,7 @@ class _AvatarWidgetState extends State<AvatarWidget> {
         ) : const SizedBox.shrink(),
         CircleAvatar(
           radius: _radiusCircle.w,
-          backgroundImage: NetworkImage("${userModel?.imageUrl ?? "https://media.travelmag.vn/files/thuannguyen/2020/04/25/cach-chup-anh-dep-tai-da-lat-1-2306.jpeg"}"),
+          backgroundImage: NetworkImage(userModel?.imageUrl ?? "https://media.travelmag.vn/files/thuannguyen/2020/04/25/cach-chup-anh-dep-tai-da-lat-1-2306.jpeg"),
         ),
         SizedBox(height: 10.w,),
         Text("${userModel?.displayName}",

@@ -4,13 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../model/diary_entity.dart';
-import '../../../model/user_model.dart';
 import '../../base/emotional_status.dart';
 import '../diary_bloc/diary_bloc.dart';
 
 
 class ItemDiary extends StatelessWidget {
-  ItemDiary({Key? key, required this.diaryEntity}) : super(key: key);
+  const ItemDiary({Key? key, required this.diaryEntity}) : super(key: key);
   final DiaryEntity? diaryEntity;
 
   @override

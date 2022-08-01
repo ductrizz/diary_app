@@ -23,7 +23,7 @@ SimpleDialogOption _simpleDialogOption(BuildContext context, EmotionalStatus emo
         Navigator.pop(context, emotionalStatus.name); },
       child: Row(children: [
         IconStatus(status: emotionalStatus.name).icon,
-        SizedBox(width: 10,),
+        SizedBox(width: 10.w,),
         Text(emotionalStatus.stringStatus, style: bodyTextApp.copyWith(color: Colors.black),)
       ],)
   );

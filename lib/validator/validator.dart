@@ -1,3 +1,6 @@
+import 'package:diary_app/res/all_core.dart';
+import 'package:get/get.dart';
+
 class Validator {
 
   static bool isValidEmail(String email){
@@ -9,7 +12,6 @@ class Validator {
     return password.length >= 6;
   }
   static bool isValidConfirmPassword(String password , String confirmPassword){
-    print("${confirmPassword == password}");
     return (confirmPassword.toString() == password.toString());
   }
 }

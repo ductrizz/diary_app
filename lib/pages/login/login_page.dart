@@ -43,9 +43,9 @@ class _LoginPageState extends State<LoginPage> {
             print('Log In is Fail');
             ScaffoldMessenger.of(context).showSnackBar( SnackBar(
               backgroundColor: Colors.grey.shade700.withOpacity(0.3),
-              duration: Duration(seconds: 3),
-                content: Container(
-                    height: 50,
+              duration: const Duration(seconds: 3),
+                content: SizedBox(
+                    height: 50.w,
                     child: Center(child: Text(" Log In is Fail", style: text16,)))));
           } else if (loginState.isSuccess) {
             context.read<AuthenticationBloc>().add(AuthenticationEventSignIn());

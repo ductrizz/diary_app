@@ -1,9 +1,7 @@
 import 'package:diary_app/generic_bloc/authentication_bloc/authentication_bloc.dart';
-import 'package:diary_app/generic_bloc/authentication_bloc/loading_dialog.dart';
 import 'package:diary_app/repositories/user_repository.dart';
 import 'package:diary_app/res/all_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../base/base_button.dart';
@@ -46,7 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
       bloc: _registerBloc,
       listener: (context, registerState){
         if(registerState.isFailure){
-          print('Register is isFailure');
+
         }else if(registerState.isSubmitting){
 
         }else if(registerState.isSuccess){
@@ -174,9 +172,9 @@ class _RegisterPageState extends State<RegisterPage> {
               if(isExisted){
                 ScaffoldMessenger.of(context).showSnackBar( SnackBar(
                     backgroundColor: Colors.grey.shade900.withOpacity(0.3),
-                    duration: Duration(seconds: 3),
-                    content: Container(
-                        height: 50,
+                    duration: const Duration(seconds: 3),
+                    content: SizedBox(
+                        height: 50.w,
                         child: Center(child: Text(" Email is Exited! Please Change Email", style: text16.copyWith(color: Colors.black),)))));
               }else{
                 _registerBloc?.add(RegisterEventSignUp(
@@ -192,5 +190,14 @@ class _RegisterPageState extends State<RegisterPage> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _entryEmailController.dispose();
+    _entryPasswordController.dispose();
+    _entryDisplayNameController.dispose();
+    _entryConfirmPasswordController.dispose();
   }
 }

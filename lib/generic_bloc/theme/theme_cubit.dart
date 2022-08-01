@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../res/all_core.dart';
-import '../../res/fonts/text_core.dart';
 
 class ThemeCubit extends Cubit<ThemeData> {
   /// {@macro brightness_cubit}
@@ -23,7 +22,7 @@ class ThemeCubit extends Cubit<ThemeData> {
     textTheme: customTextTheme,
     fontFamily: FontFamily.fontNormally,
     appBarTheme: AppBarTheme(
-      iconTheme: IconThemeData(color: Colors.black),
+      iconTheme: const IconThemeData(color: Colors.black),
       color: ligthColors().backgroundAppBarColor,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.dark,

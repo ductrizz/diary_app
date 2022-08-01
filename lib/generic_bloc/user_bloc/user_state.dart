@@ -50,3 +50,13 @@ class UserStateImagePickerFailed extends UserState {
   List<Object> get props => [message];
 }
 
+class UserStateUpdateInforProgress extends UserState {}
+class UserStateUpdateInforSuccess extends UserState {}
+class UserStateUpdateInforFailure extends UserState {
+  String message;
+
+  UserStateUpdateInforFailure(this.message);
+
+  @override
+  List<Object> get props => [message];
+}

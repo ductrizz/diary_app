@@ -11,15 +11,15 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState>{
   final UserRepository _userRepository;
 
   AuthenticationBloc({required UserRepository userRepository}) : _userRepository = userRepository, super(AuthenticationStateUninitialized()){
-    on<AuthenticationEventStart>(AuthenticationBlocStart);
-    on<AuthenticationEventSignIn>(AuthenticationBlocSignIn);
-    on<AuthenticationEventSignOut>(AuthenticationBlocSignOut);
+    on<AuthenticationEventStart>(authenticationBlocStart);
+    on<AuthenticationEventSignIn>(authenticationBlocSignIn);
+    on<AuthenticationEventSignOut>(authenticationBlocSignOut);
   }
-  Future<void> AuthenticationBlocStart(AuthenticationEventStart event, Emitter<AuthenticationState> emit) async{
+  Future<void> authenticationBlocStart(AuthenticationEventStart event, Emitter<AuthenticationState> emit) async{
     try{
       final isSignedIn = await _userRepository.isSignedIn();
       if (isSignedIn) {
-        final User? userFirebase = await _userRepository.getUser();
+        final User? userFirebase = _userRepository.getUser();
         emit(AuthenticationStateSuccess(userFirebase: userFirebase));
       } else {
         emit(AuthenticationStateFailure());
@@ -28,13 +28,13 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState>{
       emit(AuthenticationStateFailure(messageError: "Account doesn't exist"));
     }
   }
-  Future<void> AuthenticationBlocSignIn(AuthenticationEventSignIn event, Emitter<AuthenticationState> emit) async{
+  Future<void> authenticationBlocSignIn(AuthenticationEventSignIn event, Emitter<AuthenticationState> emit) async{
 
-    final User? userFirebase = await _userRepository.getUser();
+    final User? userFirebase = _userRepository.getUser();
     emit(AuthenticationStateSuccess(userFirebase: userFirebase));
   }
 
-  Future<void> AuthenticationBlocSignOut(AuthenticationEventSignOut event, Emitter<AuthenticationState> emit) async{
+  Future<void> authenticationBlocSignOut(AuthenticationEventSignOut event, Emitter<AuthenticationState> emit) async{
     await _userRepository.signOut();
     emit(AuthenticationStateFailure());
   }

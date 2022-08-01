@@ -14,26 +14,25 @@ class IconStatus{
   String status;
   IconStatus({required this.status});
   Widget get icon{
-    print(status);
     switch(status){
       case "smiley": return Container(
-        decoration : BoxDecoration(color: Color(0xFFFFFF8D), borderRadius: BorderRadius.circular(15)),
+        decoration : BoxDecoration(color: const Color(0xFFFFFF8D), borderRadius: BorderRadius.circular(15)),
         child: IconStatus.smiley);
       case "happy": return Container(
-        decoration : BoxDecoration(color: Color(0xFFFFFF8D), borderRadius: BorderRadius.circular(15)),
+        decoration : BoxDecoration(color: const Color(0xFFFFFF8D), borderRadius: BorderRadius.circular(15)),
         child: IconStatus.happy,);
       case "unhappy": return Container(
-        decoration : BoxDecoration(color: Color(0xFFB8B8AE), borderRadius: BorderRadius.circular(15)),
+        decoration : BoxDecoration(color: const Color(0xFFB8B8AE), borderRadius: BorderRadius.circular(15)),
         child: IconStatus.unhappy,);
       case "tired": return Container(
-        decoration : BoxDecoration(color: Color(0xB26B7445), borderRadius: BorderRadius.circular(15)),
+        decoration : BoxDecoration(color: const Color(0xB26B7445), borderRadius: BorderRadius.circular(15)),
         child: IconStatus.tired,);
       case "angry": return Container(
-        decoration : BoxDecoration(color: Color(0xFFEF8F19), borderRadius: BorderRadius.circular(15)),
+        decoration : BoxDecoration(color: const Color(0xFFEF8F19), borderRadius: BorderRadius.circular(15)),
         child: IconStatus.angry,);
       case "power": return IconStatus.power;
       default: return  Container(
-        decoration : BoxDecoration(color: Color(0xFFFFFF8D), borderRadius: BorderRadius.circular(15)),
+        decoration : BoxDecoration(color: const Color(0xFFFFFF8D), borderRadius: BorderRadius.circular(15)),
         child: IconStatus.happy,);
     }
   }

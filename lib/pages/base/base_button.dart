@@ -47,7 +47,7 @@ class IconAndTextButton extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
             Icon(baseIcon, color: Theme.of(context).primaryColor,),
-            SizedBox(width: 10,),
+            SizedBox(width: 10.w,),
             Text(buttonName, style: Theme.of(context).textTheme.button,)
           ],)),
     );
@@ -133,7 +133,7 @@ class TextInkWellButton extends StatelessWidget {
               (baseIcon != null) ?  Padding(
                 padding: const EdgeInsets.only(right: 10, left: 10),
                 child: Icon(baseIcon, size: 20,),
-              ) : SizedBox.shrink(),
+              ) : const SizedBox.shrink(),
               Text(buttonName, style: Theme.of(context).textTheme.button),
             ],
           )),

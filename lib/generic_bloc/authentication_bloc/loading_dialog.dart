@@ -13,7 +13,7 @@ Future<dynamic> showDialogLoading(BuildContext context) {
           children: [CircularProgressIndicator(
             strokeWidth: 8.w,
             backgroundColor: Colors.grey,
-            valueColor: new AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+            valueColor: const AlwaysStoppedAnimation<Color>(Colors.blueAccent),
           ),],
         );
       });

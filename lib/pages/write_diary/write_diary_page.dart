@@ -1,4 +1,3 @@
-import 'package:diary_app/generic_bloc/authentication_bloc/loading_dialog.dart';
 import 'package:diary_app/pages/base/emotional_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -82,14 +81,14 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Write Diary"),
+          title: const Text("Write Diary"),
           titleTextStyle: titleTextApp,
           actions: [
             IconButton(
                 onPressed: (){
                   _displayDialog(context);
                   },
-                icon: Icon(Icons.emoji_emotions_outlined))
+                icon: const Icon(Icons.emoji_emotions_outlined))
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -124,8 +123,8 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
         ),
         style: titleDiaryText,
       ),
-      Text('(${_dateTime})', textAlign: TextAlign.right, style: dateDiaryText,),
-      Divider(height: 15.w,thickness: 3.w ,indent: 150.w , endIndent: 150.w, color: Color.fromRGBO(84, 92, 84, 1.0),),
+      Text('($_dateTime)', textAlign: TextAlign.right, style: dateDiaryText,),
+      Divider(height: 15.w,thickness: 3.w ,indent: 150.w , endIndent: 150.w, color: const Color.fromRGBO(84, 92, 84, 1.0),),
     ],
   );
 
@@ -152,5 +151,12 @@ class _WriteDiaryPageState extends State<WriteDiaryPage> {
           return dialogOptionStatus(context);
         }
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _titleDiaryController.dispose();
+    _contentDiaryController.dispose();
   }
 }

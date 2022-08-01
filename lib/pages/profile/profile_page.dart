@@ -24,12 +24,11 @@ class ProfilePage extends StatelessWidget {
             child: ProfileWidget(
                 editPress: () async{
                   var user = await FirestoreRepository().getUserCredentials();
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) => EditProfilePage(
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EditProfilePage(
                         displayName: user.displayName ?? "",
                         gender: user.gender ?? "",
-                        birthday: user.birthday ?? "",
-                      )));
+                        birthday: user.birthday ?? "",)));
                 },
               ),
           ),

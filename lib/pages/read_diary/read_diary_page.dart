@@ -105,10 +105,8 @@ class _ReadDiaryPageState extends State<ReadDiaryPage> with WidgetsBindingObserv
         _diaryBloc?.add(DiaryEventDelete(date: diaryEntity!.dateTime));
         _userBloc?.add(UserEventGetUser());
         Navigator.push(context, MaterialPageRoute(builder: (context)=>HomePage()));
-        print('tap 1');
       }
       if(value == 2){
-        print('tap 2');
         Navigator.push(context,
             MaterialPageRoute(builder: (context)=> WriteDiaryPage(diaryEntity: diaryEntity)));
       }
